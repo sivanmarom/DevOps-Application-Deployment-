@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate, migrate
 import iam_user_creation
+import boto3
 
 app = Flask(__name__)
 my_users = []
@@ -36,9 +37,11 @@ def aws():
     if request.method == 'POST':
         user_name = request.form.get('username')
         password = request.form.get('password')
-        response = iam_user_creation.create_iam_user(user_name, password)
-        access_key_id = response["access_key_id"]
-        secret_access_key = response["secret_access_key"]
+        iam = boto3.client('iam')
+        iam.create_login_profile(UserName=user_name, Password=password, PasswordResetRequired=False)
+        access_keys = iam.create_access_key(UserName=user_name)
+        access_key_id = access_keys["AccessKey"]["AccessKeyId"]
+        secret_access_key = access_keys["AccessKey"]["SecretAccessKey"]
         return render_template("iam_creation_user_result.html",
                                user_name=user_name, password=password,
                                access_key_id=access_key_id,
