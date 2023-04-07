@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate, migrate
+import iam_user_creation
 
 app = Flask(__name__)
 my_users = []
@@ -32,6 +33,11 @@ def homepage():
     return render_template("homepage.html", my_users=my_users)
 @app.route('/aws')
 def aws():
+    if request.method == 'POST':
+        user_name = request.form.get('username')
+        password = request.form.get('password')
+        iam_user_creation.run(f"python iam_user_creation.py {user_name} {password}")
+        return redirect('/')
     return render_template("aws.html")
 
 if __name__ == "__main__":   
