@@ -31,7 +31,7 @@ def signup():
 @app.route('/homepage')
 def homepage():
     return render_template("homepage.html", my_users=my_users)
-@app.route('/aws')
+@app.route('/aws',methods=['POST', 'GET'])
 def aws():
     if request.method == 'POST':
         user_name = request.form.get('username')
