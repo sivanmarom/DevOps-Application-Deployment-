@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate, migrate
 import iam_user_creation
@@ -32,7 +32,7 @@ def signup():
 @app.route('/homepage')
 def homepage():
     return render_template("homepage.html", my_users=my_users)
-@app.route('/aws',methods=['POST', 'GET'])
+@app.route('/aws', methods=['POST', 'GET'])
 def aws():
     if request.method == 'POST':
         user_name = request.form.get('username')
@@ -42,11 +42,13 @@ def aws():
         access_keys = iam.create_access_key(UserName=user_name)
         access_key_id = access_keys["AccessKey"]["AccessKeyId"]
         secret_access_key = access_keys["AccessKey"]["SecretAccessKey"]
-        return render_template("iam_creation_user_result.html",
-                               user_name=user_name, password=password,
-                               access_key_id=access_key_id,
-                               secret_access_key=secret_access_key)
+        return redirect(url_for('iam_creation_user_result',
+                                user_name=user_name,
+                                password=password,
+                                access_key_id=access_key_id,
+                                secret_access_key=secret_access_key))
     return render_template("aws.html")
+
 
 if __name__ == "__main__":   
     app.run(host="0.0.0.0", port=5000)
