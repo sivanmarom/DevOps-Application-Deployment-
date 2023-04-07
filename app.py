@@ -24,12 +24,15 @@ def signup():
         p = Profile(user_name=user_name, password=password)
         db.session.add(p)
         db.session.commit()
-        return redirect("/")
+        return redirect("/homepage")
     return render_template("signup.html")
 
-@app.route('/')
+@app.route('/homepage')
 def homepage():
     return render_template("homepage.html", my_users=my_users)
+@app.route('/aws')
+def aws():
+    return render_template("aws.html")
 
 if __name__ == "__main__":   
     app.run(host="0.0.0.0", port=5000)
