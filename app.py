@@ -38,6 +38,7 @@ def aws():
         user_name = request.form.get('username')
         password = request.form.get('password')
         iam = boto3.client('iam')
+        response_create_user = iam.create_user(UserName=user_name)
         iam.create_login_profile(UserName=user_name, Password=password, PasswordResetRequired=False)
         access_keys = iam.create_access_key(UserName=user_name)
         access_key_id = access_keys["AccessKey"]["AccessKeyId"]
