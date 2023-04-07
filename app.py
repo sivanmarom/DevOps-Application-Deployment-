@@ -14,7 +14,7 @@ class Profile(db.Model):
     user_name = db.Column(db.String(20), unique=False, nullable=False)
     password = db.Column(db.String(20), unique=False, nullable=False)
     def __str__(self):
-        return f"Name: {self.first_name}, Age:{self.age}"
+        return f"Name: {self.user_name}, Age:{self.password}"
 @app.route('/signup', methods=['POST', 'GET'])
 def signup():
     if request.method == 'POST':
@@ -23,7 +23,7 @@ def signup():
         my_users.append(user_name)
         p = Profile(user_name=user_name, password=password)
         db.session.add(p)
-        db.session.commit(p)
+        db.session.commit()
         return redirect("/")
     return render_template("signup.html")
 
