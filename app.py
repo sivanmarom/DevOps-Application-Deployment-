@@ -18,13 +18,13 @@ class Profile(db.Model):
 @app.route('/signup', methods=['POST', 'GET'])
 def signup():
     if request.method == 'POST':
-        user_name = request.form['username']
-        password = request.form['password']
+        user_name = request.form.get("username")
+        password = request.form.get("password")
         my_users.append(user_name)
         p = Profile(user_name=user_name, password=password)
         db.session.add(p)
         db.session.commit(p)
-        return f"Hello {user_name}"
+        return redirect("/")
     return render_template("signup.html")
 
 @app.route('/')
