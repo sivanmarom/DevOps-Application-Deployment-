@@ -1,11 +1,6 @@
 import boto3
-import sys
 
 iam = boto3.client("iam")
-
-user_name = sys.argv[1]
-password = sys.argv[2]
-
 def create_iam_user(user_name,password):
     response = iam.create_user(UserName=user_name)
     response =iam.add_user_to_group(
