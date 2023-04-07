@@ -36,8 +36,13 @@ def aws():
     if request.method == 'POST':
         user_name = request.form.get('username')
         password = request.form.get('password')
-        response = create_iam_user(user_name, password)
-        return render_template("/", response=response)
+        response = iam_user_creation.create_iam_user(user_name, password)
+        access_key_id = response["access_key_id"]
+        secret_access_key = response["secret_access_key"]
+        return render_template("iam_creation_user_result.html",
+                               user_name=user_name, password=password,
+                               access_key_id=access_key_id,
+                               secret_access_key=secret_access_key)
     return render_template("aws.html")
 
 if __name__ == "__main__":   
