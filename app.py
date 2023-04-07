@@ -1,8 +1,7 @@
 from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate, migrate
-import infra_flask
-import boto3
+
 app = Flask(__name__)
 my_users = []
 
