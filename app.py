@@ -36,8 +36,8 @@ def aws():
     if request.method == 'POST':
         user_name = request.form.get('username')
         password = request.form.get('password')
-        iam_user_creation.run(f"python iam_user_creation.py {user_name} {password}")
-        return redirect('/')
+        response = create_iam_user(user_name, password)
+        return render_template("/", response=response)
     return render_template("aws.html")
 
 if __name__ == "__main__":   
