@@ -14,7 +14,7 @@ class Profile(db.Model):
     user_name = db.Column(db.String(20), unique=False, nullable=False)
     password = db.Column(db.String(20), unique=False, nullable=False)
     def __str__(self):
-        return f"Name: {self.user_name}, Age:{self.password}"
+        return f"Username: {self.user_name}, password:{self.password}"
 @app.route('/signup', methods=['POST', 'GET'])
 def signup():
     if request.method == 'POST':
