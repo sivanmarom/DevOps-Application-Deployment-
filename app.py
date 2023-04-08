@@ -37,8 +37,7 @@ def aws():
     if request.method == 'POST':
         user_name = request.form.get('username')
         password = request.form.get('password')
-        iam_user_creation.create_iam_user_and_login(user_name,password)
-        access_keys = iam_user_creation.create_access_key(user_name)
+        access_keys = iam_user_creation.create_iam_user_and_access_key(user_name=user_name, password=password)
         access_key_id = access_keys["AccessKey"]["AccessKeyId"]
         secret_access_key = access_keys["AccessKey"]["SecretAccessKey"]
         return redirect(url_for('iam_creation_user_result',
