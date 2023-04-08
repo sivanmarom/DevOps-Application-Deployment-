@@ -37,10 +37,8 @@ def aws():
     if request.method == 'POST':
         user_name = request.form.get('username')
         password = request.form.get('password')
-        iam = boto3.client('iam')
-        response_create_user = iam.create_user(UserName=user_name)
-        iam.create_login_profile(UserName=user_name, Password=password, PasswordResetRequired=False)
-        access_keys = iam.create_access_key(UserName=user_name)
+        iam_user_creation.create_iam_user_and_login(user_name,password)
+        access_keys = iam_user_creation.create_access_key(user_name)
         access_key_id = access_keys["AccessKey"]["AccessKeyId"]
         secret_access_key = access_keys["AccessKey"]["SecretAccessKey"]
         return redirect(url_for('iam_creation_user_result',
@@ -50,6 +48,17 @@ def aws():
                                 secret_access_key=secret_access_key))
     return render_template("aws.html")
 
+@app.route('/iam_creation_user_result')
+def iam_creation_user_result():
+    user_name = request.args.get('user_name')
+    password = request.args.get('password')
+    access_key_id = request.args.get('access_key_id')
+    secret_access_key = request.args.get('secret_access_key')
+    return render_template("iam_creation_user_result.html",
+                            user_name=user_name,
+                            password=password,
+                            access_key_id=access_key_id,
+                            secret_access_key=secret_access_key)
 
 if __name__ == "__main__":   
     app.run(host="0.0.0.0", port=5000)
