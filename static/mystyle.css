@@ -1,0 +1,52 @@
+/* change background color of page */
+body {
+    background-color: #f2f2f2;
+}
+
+/* style the heading */
+h1 {
+    color: #333;
+    text-align: center;
+    font-size: 36px;
+}
+
+/* style the form */
+form {
+    width: 30%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+
+}
+
+/* style the labels and inputs */
+label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 20px;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 40%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+input[type="submit"] {
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #3e8e41;
+}
