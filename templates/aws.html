@@ -18,11 +18,11 @@
     <br>
     <input type="password" name="password" required>
     <br>
-    <input type="submit" value="Create user">
+    <input type="submit" name="submit" value="Create user">
 </form>
 <h3>Launch New Instance</h3>
-<form method="post" >
-    <label>Instance name</label>
+<form method="post">
+     <label>Instance name</label>
     <br>
      <input type = "text" name="instance_name" required>
     <br>
@@ -42,12 +42,14 @@
     <br>
     <input type="text" name="security_group_id" required>
     <br>
-    <label>Instance Count</label>
+  <label>Instance Count</label>
     <br>
-    <input type="number" name="instance count" required>
+    <input type="number" name="instance_count" required step="1">
     <br>
-    <input type="submit" value="Create instance">
+    <input type="submit" name="submit" value="Create instance">
+
 </form>
+<a href="/docker">docker</a>
 <a href="/signup">signup</a>
 <a href="/homepage">homepage</a>
 </body>
