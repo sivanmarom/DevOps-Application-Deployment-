@@ -1,10 +1,13 @@
-from flask import Flask, render_template, request, redirect, url_for
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate, migrate
-import iam_user_creation
-import docker
-import launch_instance
 import subprocess
+
+import jenkins
+from flask import Flask, render_template, request, redirect, url_for
+from flask_migrate import Migrate
+from flask_sqlalchemy import SQLAlchemy
+from paramiko import file
+
+import iam_user_creation
+import launch_instance
 
 app = Flask(__name__)
 my_users = []
@@ -73,12 +76,16 @@ def create_and_launch():
             image_id = request.form.get('image_id')
             security_group_id = request.form.get('security_group_id')
             instance_count = int(request.form['instance_count'])
+            add_docker = 'add_docker' in request.form
+            add_jenkins ='add_jenkins' in request.form
             i = 1
             while i <= instance_count:
-                launch_instance.launch_ec2_instance(instance_name=instance_name, instance_type=instance_type,
+                public_ip=launch_instance.launch_ec2_instance(instance_name=instance_name, instance_type=instance_type,
                                                     key_pair_name=key_pair_name, image_id=image_id,
-                                                    security_group_id=security_group_id, instance_count=1)
+                                                    security_group_id=security_group_id, instance_count=1, add_docker=add_docker, add_jenkins=add_jenkins)
                 i += 1
+
+            print(public_ip)
             return redirect('/launched')
     return render_template("aws.html")
 
@@ -91,11 +98,40 @@ def result():
                            access_key_id=request.args.get('access_key_id'),
                            secret_access_key=request.args.get('secret_access_key'))
 
+@app.route('/create_jenkins_job', methods=['POST', 'GET'])
+def create_jenkins_job():
+    if request.form == "POST":
+        job_name = request.form.get("job_test")
+        server = jenkins.Jenkins('http://3.95.221.78:8080', username='admin', password='admin')
+        with open('templates/jenkins_job.xml', 'r') as f:
+            job_config_xml = f.read()
+        server.create_job(job_name, job_config_xml)
+        return "job created successfully"
+    return render_template('create_jenkins_job.html')
+
 
 @app.route('/launched')
 def launched():
     return render_template("launched.html")
 
+
+@app.route('/jenkins', methods=['POST', 'GET'])
+def create_jenkins_user():
+    # server = jenkins.Jenkins(f'http://{public_ip}:8080', username='your-jenkins-username',
+    #                          password='your-jenkins-api-token')
+    #
+    # if request.method == 'POST':
+    #     username = request.form.get('username')
+    #     password = request.form.get('password')
+    #     full_name = request.form.get('full_name')
+    #     email = request.form.get('email')
+    #     new_user = {
+    #         username: username,
+    #         password: password,
+    #         full_name: full_name,
+    #         email: email
+    #     }
+    return render_template('jenkins.html')
 
 if __name__ == "__main__":
     app.run(debug=True)
