@@ -1,6 +1,7 @@
 import boto3
 import time
-import subprocess
+
+public_ip = ""
 def launch_ec2_instance(instance_name, instance_type, key_pair_name, image_id, security_group_id, instance_count,
                         add_docker=False, add_jenkins=False):
     ec2 = boto3.resource("ec2")
