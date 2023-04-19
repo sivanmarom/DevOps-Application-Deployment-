@@ -2,9 +2,25 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>ec2</title>
+    <title>Launched Instances</title>
 </head>
 <body>
-<h1>new instance</h1>
+    <h1>Launched Instances</h1>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Instance ID</th>
+            <th>Instance State</th>
+            <th>Public IP</th>
+        </tr>
+        {% for instance in instances_list %}
+        <tr>
+            <td>{{ instance['name'] }}</td>
+            <td>{{ instance['instance_id'] }}</td>
+            <td>{{ instance['instance state'] }}</td>
+            <td>{{ instance['public_ip'] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
 </body>
 </html>

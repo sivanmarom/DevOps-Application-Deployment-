@@ -1,11 +1,10 @@
 import subprocess
 import jenkins
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
-
-import iam_user_creation
-import launch_instance
+import boto3
+import time
 
 app = Flask(__name__)
 my_users = []
@@ -13,8 +12,6 @@ my_users = []
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///my_site.db'
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
-
-
 
 class Profile(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -24,9 +21,8 @@ class Profile(db.Model):
     def __str__(self):
         return f"Username: {self.user_name}, password:{self.password}"
 
-
 @app.route('/signup', methods=['POST', 'GET'])
-def signup():
+def Signup():
     if request.method == 'POST':
         user_name = request.form.get("username")
         password = request.form.get("password")
@@ -37,9 +33,83 @@ def signup():
         return redirect("/registered")
     return render_template("signup.html")
 
+@app.route('/')
+def homepage():
+    return render_template("homepage.html")
+@app.route('/registered')
+def registered():
+    return render_template("registered.html", my_users=my_users)
 
-@app.route('/docker', methods=['POST', 'GET'])
-def docker():
+@app.route('/aws', methods=['POST', 'GET'])
+def create_iam_user():
+    if request.method == 'POST' and request.form['submit'] == 'Create user':
+        iam = boto3.client("iam")
+        username = request.form.get('username')
+        password = request.form.get('password')
+        iam.create_user(UserName=username)
+        iam.add_user_to_group(GroupName='admin_permissions', UserName=username)
+        iam.create_login_profile(UserName=username, Password=password, PasswordResetRequired=False)
+        access_keys = iam.create_access_key(UserName=username)
+        access_key_id = access_keys["AccessKey"]["AccessKeyId"]
+        secret_access_key = access_keys["AccessKey"]["SecretAccessKey"]
+        return redirect(url_for('user_information', username=username, password=password, access_key_id=access_key_id,
+                        secret_access_key=secret_access_key))
+    elif request.method == 'POST' and request.form['submit'] == 'Create instance':
+        launched=launch_instance()
+        return launched
+    return render_template("aws.html")
+
+def launch_instance():
+    if request.method == 'POST' and request.form['submit'] == 'Create instance':
+        ec2 = boto3.resource("ec2")
+        add_docker = 'add_docker' in request.form
+        add_jenkins = 'add_jenkins' in request.form
+        user_data = "#!/bin/bash\n"
+        if add_docker:
+            user_data += "sudo apt update && sudo apt -y install docker.io\n"
+        if add_jenkins:
+            user_data += "sudo docker pull jenkins/jenkins:lts && sudo docker run -p 8080:8080 -p 50000:50000 --name Jenkins_master -v jenkins_home:/var/jenkins_home jenkins/jenkins:lts\n"
+        instance_name = request.form.get('instance_name')
+        instance_type = request.form.get('instance_type')
+        key_pair_name = 'jenkins-master'
+        image_id = request.form.get('image_id')
+        security_group_id = 'sg-03915679baa198009'
+        instance_count = int(request.form['instance_count'])
+        instances = []
+        for i in range(instance_count):
+            instance = ec2.create_instances(
+                ImageId=image_id,
+                InstanceType=instance_type,
+                KeyName=key_pair_name,
+                SecurityGroupIds=[security_group_id],
+                MinCount=instance_count,
+                MaxCount=instance_count,
+                UserData=user_data,
+                TagSpecifications=[{
+                    'ResourceType': "instance",
+                    'Tags': [{'Key': 'Name', 'Value': instance_name}]
+                }]
+            )
+            while True:
+                instance[i].reload()
+                if instance[i].state['Name'] == 'running' and instance[i].public_ip_address is not None:
+                    break
+                print("Waiting for instance to be running and public IP address...")
+                time.sleep(5)
+            instance_dict = {'instance_name': instance_name, 'instance_id': instance[i].instance_id, 'instance_public_ip': instance[i].public_ip_address, 'instance_state': instance[i].state['Name']}
+            instances.append(instance_dict)
+        return render_template("aws.html", instances=instances)
+
+@app.route('/user_created')
+def user_information():
+    return render_template('iam_creation_user_result.html',
+                           username=request.args.get('username'),
+                           password=request.args.get('password'),
+                           access_key_id=request.args.get('access_key_id'),
+                           secret_access_key=request.args.get('secret_access_key'))
+
+@app.route('/docker_image', methods=['POST', 'GET'])
+def create_docker_image():
     if request.method == 'POST':
         image_name = request.form.get('image_name')
         subprocess.run(['docker', 'build', '-t', f'{image_name}', '.'])
@@ -50,90 +120,16 @@ def docker():
     else:
         return render_template('docker.html')
 
-
-@app.route('/')
-def homepage():
-    return render_template("homepage.html")
-@app.route('/registered')
-def registered():
-    return render_template("registered.html", my_users=my_users)
-
-
-
-@app.route('/aws', methods=['POST', 'GET'])
-def create_and_launch():
-    if request.method == 'POST':
-        if request.form['submit'] == 'Create user':
-            user_name = request.form.get('username')
-            password = request.form.get('password')
-            access_keys = iam_user_creation.create_iam_user_and_access_key(user_name=user_name, password=password)
-            access_key_id = access_keys["AccessKey"]["AccessKeyId"]
-            secret_access_key = access_keys["AccessKey"]["SecretAccessKey"]
-            return redirect(
-                url_for('result', user_name=user_name, password=password, access_key_id=access_key_id,
-                        secret_access_key=secret_access_key))
-        elif request.form['submit'] == 'Create instance':
-            instance_name = request.form.get('instance_name')
-            instance_type = request.form.get('instance_type')
-            key_pair_name = request.form.get('key_pair_name')
-            image_id = request.form.get('image_id')
-            security_group_id = request.form.get('security_group_id')
-            instance_count = int(request.form['instance_count'])
-            add_docker = 'add_docker' in request.form
-            add_jenkins ='add_jenkins' in request.form
-            i = 1
-            while i <= instance_count:
-                        public_ip=launch_instance.launch_ec2_instance(instance_name=instance_name, instance_type=instance_type,
-                                                    key_pair_name=key_pair_name, image_id=image_id,
-                                                    security_group_id=security_group_id, instance_count=1, add_docker=add_docker, add_jenkins=add_jenkins)
-                        i += 1
-
-            print(public_ip)
-            return redirect('/launched')
-    return render_template("aws.html")
-
-
-@app.route('/iam_creation_user_result')
-def result():
-    return render_template('iam_creation_user_result.html',
-                           user_name=request.args.get('user_name'),
-                           password=request.args.get('password'),
-                           access_key_id=request.args.get('access_key_id'),
-                           secret_access_key=request.args.get('secret_access_key'))
-
-@app.route('/create_jenkins_job', methods=['POST', 'GET'])
-def create_job():
+@app.route('/create_jenkins_job',methods=['POST', 'GET'])
+def create_jenkins_job():
     if request.method == "POST":
         job_name = request.form.get("job_test")
-        server = jenkins.Jenkins('http://3.84.91.24:8080/', username='sivan_marom', password='sm5670589')
+        server = jenkins.Jenkins('http://54.242.149.128:8080/', username='sivan_marom', password='sm5670589')
         with open('templates/jenkins_job.xml', 'r') as f:
             job_config_xml = f.read()
         server.create_job(job_name, job_config_xml)
         return "job created successfully"
     return render_template('create_jenkins_job.html')
-
-@app.route('/launched')
-def launched():
-    return render_template("launched.html")
-
-
-@app.route('/jenkins', methods=['POST', 'GET'])
-def create_jenkins_user():
-    # server = jenkins.Jenkins(f'http://{public_ip}:8080', username='your-jenkins-username',
-    #                          password='your-jenkins-api-token')
-    #
-    # if request.method == 'POST':
-    #     username = request.form.get('username')
-    #     password = request.form.get('password')
-    #     full_name = request.form.get('full_name')
-    #     email = request.form.get('email')
-    #     new_user = {
-    #         username: username,
-    #         password: password,
-    #         full_name: full_name,
-    #         email: email
-    #     }
-    return render_template('jenkins.html')
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -3,14 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <title>AWS</title>
-      <link rel="stylesheet" type="text/css" href='/static/mystyle-aws.css'>
+    <link rel="stylesheet" type="text/css" href="/static/mystyle-aws.css">
 </head>
 <body>
-<h1>hello aws</h1>
-<br>
-<h3>Create Iam user</h3>
-<form method="post">
-    <label>Enter username</label>
+    <header>
+        <h1>AWS Management Console</h1>
+        <nav>
+            <a href="#">Instances</a>
+            <a href="#">IAM Users</a>
+            <a href="#">Security Groups</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="form iam-form">
+                <h2>Create IAM User</h2>
+                <form action="/aws" method="POST">
+                    <label>Enter username</label>
     <br>
      <input type = "text" name="username" required>
     <br>
@@ -19,28 +29,32 @@
     <input type="password" name="password" required>
     <br>
     <input type="submit" name="submit" value="Create user">
-</form>
-<h3>Launch New Instance</h3>
-<form method="post">
+                </form>
+            </div>
+
+            <div class="form instance-form">
+                <h2>Launch New Instance</h2>
+               <form action="/aws" method="POST">
      <label>Instance name</label>
     <br>
      <input type = "text" name="instance_name" required>
     <br>
-     <label>Instance Type</label>
+    <label for="instance_type">Select an instance type:</label>
+<select name="instance_type" id="instance_type" required>
+  <option value="t2.micro">t2.micro</option>
+  <option value="t2.small">t2.small</option>
+  <option value="t2.medium">t2.medium</option>
+</select>
     <br>
-    <input type="text" name="instance_type" required>
+    <label>Operating system</label>
     <br>
-    <label>Key pair name</label>
-    <br>
-    <input type="text" name="key_pair_name" required>
-    <br>
-    <label>Image id</label>
-    <br>
-    <input type="text" name="image_id" required>
-    <br>
-    <label>Security Group Id</label>
-    <br>
-    <input type="text" name="security_group_id" required>
+   <label for="image_id">Select Operating System:</label>
+<select name="image_id" id="image_id" required>
+  <option value="ami-06e46074ae430fba6">Amazon Linux</option>
+  <option value="ami-0aa2b7722dc1b5612">Ubuntu 20.04</option>
+  <option value="ami-0bde1eb2c18cb2abe">Windows Server 2022 Base</option>
+     <option value="ami-00805552fa999b1a0">macOS Ventura</option>
+</select>
     <br>
   <label>Instance Count</label>
     <br>
@@ -56,16 +70,32 @@
 
 </form>
 
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Instance ID</th>
-    <th>Instance State</th>
-    <th>Status Check</th>
-  </tr>
+            </div>
+
+        </div>
+    </main>
+    <div class="instances_table">
+        <table>
+  <thead>
+    <tr>
+      <th>Instance Name</th>
+      <th>Instance ID</th>
+      <th>Public IP</th>
+      <th>Instance State</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for instance in instances %}
+      <tr>
+        <td>{{ instance.instance_name }}</td>
+        <td>{{ instance.instance_id }}</td>
+        <td>{{ instance.instance_public_ip }}</td>
+        <td>{{ instance.instance_state }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
 </table>
-<a href="/docker">docker</a>
-<a href="/signup">signup</a>
-<a href="/homepage">homepage</a>
+
+    </div>
 </body>
 </html>

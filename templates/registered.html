@@ -3,15 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>welcome user</title>
+       <link rel="stylesheet" type="text/css" href='/static/mystyle.css'>
 </head>
 <body>
+<div class="button-bar">
+  <button class="button"><a href="/docker">Docker</a></button>
+  <button class="button"><a href="/aws">AWS</a></button>
+  <button class="button"><a href="/jenkins">Jenkins User</a></button>
+  <button class="button"><a href="/create_jenkins_job">Jenkins Job</a></button>
+</div>
+<div class="registered_user">
 {% for user in my_users %}
   <h1>Hello {{user}}</h1>
 {% endfor %}
+</div>
 
-<a href="/docker">docker</a>
-<a href="/aws">aws</a>
-<a href="/jenkins">jenkins-user</a>
-<a href="/create_jenkins_job">jenkins-job</a>
 </body>
 </html>

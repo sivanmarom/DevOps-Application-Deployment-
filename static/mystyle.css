@@ -1,6 +1,7 @@
 /* change background color of page */
 body {
     background-color: #f2f2f2;
+     font-family: "Lucida Console", "Courier New", monospace;
 }
 
 /* style the heading */
@@ -8,16 +9,18 @@ h1 {
     color: #333;
     text-align: center;
     font-size: 36px;
+    font-family: "Garamond", serif;
 }
 
 /* style the form */
 form {
-    width: 30%;
+    width: 40%;
     margin: 0 auto;
     padding: 20px;
     background-color: #fff;
     border: 1px solid #ccc;
     border-radius: 5px;
+    text-align:center
 
 }
 
@@ -34,7 +37,7 @@ input[type="password"] {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
 }
 
 input[type="submit"] {
@@ -49,4 +52,60 @@ input[type="submit"] {
 
 input[type="submit"]:hover {
     background-color: #3e8e41;
+}
+
+
+.button-bar {
+ display: flex; /* use flexbox to align the buttons */
+  justify-content: flex-start; /* align the buttons to the left */
+}
+
+.button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #3e8e41;
+}
+
+/* Style for the header */
+header {
+    background-color: #333;
+    color: #fff;
+
+}
+
+/* Style for the header links */
+header a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 10px;
+    font-size: 16px;
+}
+
+/* Style for the header links on hover */
+header a:hover {
+    color: #ccc;
+}
+
+/* Style for the homepage section */
+.homepage {
+    text-align: center;
+    padding: 50px;
+}
+
+/* Style for the main content */
+main {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
 }

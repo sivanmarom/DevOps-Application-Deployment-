@@ -1,53 +1,86 @@
+/* Style for the entire page */
 body {
   font-family: Arial, sans-serif;
-  background-color: #f2f2f2;
   margin: 0;
+  padding: 0;
 }
 
+/* Style for the heading */
 h1 {
   text-align: center;
-  margin-top: 50px;
 }
 
-h3 {
-   text-align: center;
-}
-
+/* Style for the forms container */
 form {
-  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px;
   padding: 20px;
-  background-color: #fff;
-  width: 50%;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-}
-
-label {
-  display: block;
-  margin-bottom: 10px;
-}
-
-input[type="text"],
-input[type="password"],
-input[type="number"] {
-  display: block;
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 20px;
-  border-radius: 5px;
   border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f5f5f5;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
+/* Style for the left form */
+.creat_iam_user {
+  width: 40%;
+  float: left;
+}
+
+/* Style for the right form */
+.launch_instance {
+  width: 40%;
+  float: right;
+}
+
+/* Style for the form input fields */
+label, input[type="text"], input[type="password"], input[type="number"], select {
+  display: block;
+  margin: 10px 0;
+}
+
+/* Style for the form submit button */
 input[type="submit"] {
-  background-color: #007bff;
-  color: #fff;
+  margin-top: 20px;
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
+  background-color: #333;
+  color: #fff;
+  font-size: 16px;
   cursor: pointer;
-  transition: background-color 0.3s ease-in-out;
 }
 
+/* Style for the form submit button on hover */
 input[type="submit"]:hover {
-  background-color: #0056b3;
+  background-color: #ccc;
+  color: #333;
+}
+
+/* Style for the table */
+table {
+  margin: 20px;
+  border-collapse: collapse;
+  width: 80%;
+}
+
+/* Style for the table header */
+th {
+  background-color: #333;
+  color: #fff;
+  text-align: left;
+  padding: 8px;
+}
+
+/* Style for the table rows */
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+/* Style for the table cells */
+td {
+  border: 1px solid #ddd;
+  padding: 8px;
 }
