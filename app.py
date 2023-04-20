@@ -114,7 +114,7 @@ def create_docker_image():
         image_name = request.form.get('image_name')
         subprocess.run(['docker', 'build', '-t', f'{image_name}', '.'])
         subprocess.run(['docker', 'tag', f'{image_name}', f'sivanmarom/test:{image_name}'])
-        subprocess.run(['docker', 'login', '-u', 'sivanmarom', '-p', 'sm5670589'])
+        subprocess.run(['docker', 'login', '-u', 'sivanmarom', '-p', ''])
         subprocess.run(['docker', 'push', f'sivanmarom/test:{image_name}'])
         return f'Docker image {image_name} created and pushed to Docker Hub'
     else:
