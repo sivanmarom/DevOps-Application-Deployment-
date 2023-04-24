@@ -98,3 +98,61 @@ font-size: 20px;
 .register_link{
 color:black;
 }
+
+.sign_up_form{
+ border-color: black;
+    margin: 0 auto;
+    max-width: 400px;
+    height: 250px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f5ebe0;
+
+}
+
+.input {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+
+        }
+
+   .submit {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #black;
+            color: black;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            cursor: pointer;
+            font-size: 15px;
+            font-family: cursive;
+        }
+
+.sign_up_label{
+    font-size: 20px;
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.button-bar{
+    text-align: center;
+     color:black;
+}
+
+.button{
+    font-size: 15px;
+    font-family: cursive;
+
+}
+
+.button a {
+  color: black;
+}

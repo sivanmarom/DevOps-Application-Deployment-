@@ -1,8 +1,12 @@
 /* Style for the entire page */
 body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
+  background-image: url('background_homepage.jpg');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
+  background-size: cover;
+  font-family: cursive;
+  opacity:0.85;
 }
 
 /* Style for the heading */
@@ -14,26 +18,26 @@ h1 {
 form {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: left;
   margin: 20px;
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 5px;
   background-color: #f5f5f5;
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  opacity:0.85
 }
 
-/* Style for the left form */
-.creat_iam_user {
-  width: 40%;
+.container_iam_form{
+ width: 30%;
   float: left;
 }
 
-/* Style for the right form */
-.launch_instance {
-  width: 40%;
+.container_instance_form{
+ width: 40%;
   float: right;
 }
+
 
 /* Style for the form input fields */
 label, input[type="text"], input[type="password"], input[type="number"], select {
@@ -51,6 +55,7 @@ input[type="submit"] {
   color: #fff;
   font-size: 16px;
   cursor: pointer;
+   font-family: cursive;
 }
 
 /* Style for the form submit button on hover */
@@ -59,28 +64,42 @@ input[type="submit"]:hover {
   color: #333;
 }
 
+.checkbox-container {
+  display: inline-flex;
+  align-items: center;
+}
+
 /* Style for the table */
-table {
+.instances_table {
   margin: 20px;
   border-collapse: collapse;
-  width: 80%;
+  width: 30%;
+  float: left;
+
+
 }
 
 /* Style for the table header */
 th {
-  background-color: #333;
-  color: #fff;
   text-align: left;
   padding: 8px;
+  background-color: #f5f5f5;
+  color: black;
 }
 
 /* Style for the table rows */
 tr:nth-child(even) {
-  background-color: #f2f2f2;
+   background-color: #f5f5f5;
 }
 
 /* Style for the table cells */
 td {
   border: 1px solid #ddd;
   padding: 8px;
+  color: black;
+   background-color: #f5f5f5;
+}
+
+.select{
+     font-family: cursive;
 }

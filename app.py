@@ -118,13 +118,13 @@ def create_docker_image():
         subprocess.run(['docker', 'push', f'sivanmarom/test:{image_name}'])
         return f'Docker image {image_name} created and pushed to Docker Hub'
     else:
-        return render_template('docker.html')
+        return render_template('docker_image.html')
 
 @app.route('/create_jenkins_job',methods=['POST', 'GET'])
 def create_jenkins_job():
     if request.method == "POST":
         job_name = request.form.get("job_test")
-        server = jenkins.Jenkins('http://54.242.149.128:8080/', username='sivan_marom', password='sm5670589')
+        server = jenkins.Jenkins('http://54.167.24.140:8080/', username='sivan_marom', password='1234')
         with open('templates/jenkins_job.xml', 'r') as f:
             job_config_xml = f.read()
         server.create_job(job_name, job_config_xml)
