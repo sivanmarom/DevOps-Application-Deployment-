@@ -128,8 +128,22 @@ def create_jenkins_job():
         with open('templates/jenkins_job.xml', 'r') as f:
             job_config_xml = f.read()
         server.create_job(job_name, job_config_xml)
+        server.build_job(job_name)
         return "job created successfully"
     return render_template('create_jenkins_job.html')
+
+@app.route('/create_jenkins_job_pipeline', methods=['POST', 'GET'])
+def create_jenkins_job_pipeline():
+    if request.method == "POST":
+        job_name = request.form.get("job2")
+        server = jenkins.Jenkins('http://54.167.24.140:8080/', username='sivan_marom', password='1234')
+        with open('templates/jenkins_job_pipeline.xml', 'r') as f:
+            job_config_xml = f.read()
+        server.create_job(job_name, job_config_xml)
+        server.build_job(job_name)
+        return "job created successfully"
+    return render_template('create_jenkins_job.html')
+
 
 if __name__ == "__main__":
     app.run(debug=True)
