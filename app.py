@@ -68,7 +68,7 @@ def launch_instance():
         if add_docker:
             user_data += "sudo apt update && sudo apt -y install docker.io\n"
         if add_jenkins:
-            user_data += "sudo docker pull jenkins/jenkins:lts && sudo docker run -p 8080:8080 -p 50000:50000 --name Jenkins_master -v jenkins_home:/var/jenkins_home jenkins/jenkins:lts\n"
+            user_data +='sudo docker run -p 8080:8080 -p 50000:50000 --name Jenkins_master -v jenkins_home:/var/jenkins_home jenkins/jenkins:lts'
         instance_name = request.form.get('instance_name')
         instance_type = request.form.get('instance_type')
         key_pair_name = 'jenkins-master'
@@ -136,7 +136,7 @@ def create_jenkins_job():
 def create_jenkins_job_pipeline():
     if request.method == "POST":
         job_name = request.form.get("job2")
-        server = jenkins.Jenkins('http://54.167.24.140:8080/', username='sivan_marom', password='1234')
+        server = jenkins.Jenkins('http://44.202.243.165:8080/', username='sivan_marom', password='1234')
         with open('templates/jenkins_job_pipeline.xml', 'r') as f:
             job_config_xml = f.read()
         server.create_job(job_name, job_config_xml)
