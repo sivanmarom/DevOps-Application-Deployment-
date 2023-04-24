@@ -8,8 +8,8 @@ pipeline {
     stages {
         stage('install python'){
             steps{
-                    sh 'apt update'
-                    sh 'apt install python3 -y'
+                    sh 'sudo apt update'
+                    sh 'sudo apt install python3 -y'
             }
         }
 //         stage('Build Docker image') {
