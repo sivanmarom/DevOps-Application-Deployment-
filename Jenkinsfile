@@ -8,8 +8,10 @@ pipeline {
     stages {
         stage('install python'){
             steps{
-                    sh 'sudo apt update'
-                    sh 'sudo apt install python3 -y'
+                    sh "exit"
+                    sh "docker exec -u root -it Jenkins_master bash"
+                    sh 'apt update'
+                    sh ' apt install python3 -y'
             }
         }
 //         stage('Build Docker image') {
