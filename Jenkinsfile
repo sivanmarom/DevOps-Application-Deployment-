@@ -6,24 +6,18 @@ pipeline {
     TIME = sh(script: 'date "+%Y-%m-%d %H:%M:%S"', returnStdout: true).trim()
       }
     stages {
-      stage('Install Dependencies') {
+      stage('git clone') {
             steps {
-                sh 'apt-get update && apt-get install -y python3'
-                sh 'apt-get install python3-pip'
-                sh 'pip install flask'
+                sh 'git clone https://github.com/sivanmarom/project-flask-app.git'
             }
         }
-        stage('Run Python Script') {
-            steps {
-                sh 'python3 mini_app.py &'
-            }
-        }
-//         stage('Build Docker image') {
-//             steps {
-//                 sh 'sudo docker build -t flask_image .'
-//               sh "sudo docker run -it --name flaskApp -p 5000:5000 -d flask_image"
-//             }
-//         }
+        stage('Build Docker image') {
+           steps {
+                sh 'sudo docker build -t flask_image .'
+               sh "sudo docker run -it --name flaskApp -p 5000:5000 -d flask_image"
+          }
+    }
+//
 //
 //         stage("build user") {
 //   steps{

@@ -1,5 +1,5 @@
 import subprocess
-
+import jenkins
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
@@ -68,7 +68,7 @@ def launch_instance():
         if add_docker:
             user_data += "sudo apt update && sudo apt -y install docker.io\n"
         if add_jenkins:
-            user_data +='sudo docker run -d --user root -p 8080:8080 -p 50000:50000 --name jenkins -v jenkins_home:/var/jenkins_home jenkins/jenkins:lts'
+            user_data +='sudo docker run -p 8080:8080 -p 50000:50000 --name Jenkins_master -v jenkins_home:/var/jenkins_home jenkins/jenkins:lts'
         instance_name = request.form.get('instance_name')
         instance_type = request.form.get('instance_type')
         key_pair_name = 'jenkins-master'
@@ -124,7 +124,7 @@ def create_docker_image():
 def create_jenkins_job():
     if request.method == "POST":
         job_name = request.form.get("job_test")
-        server = jenkins.Jenkins('http:/54.147.134.20:8080/', username='sivan_marom', password='1234')
+        server = jenkins.Jenkins('http://54.197.127.94:8080/', username='sivan_marom', password='1234')
         with open('templates/jenkins_job.xml', 'r') as f:
             job_config_xml = f.read()
         server.create_job(job_name, job_config_xml)
@@ -136,7 +136,7 @@ def create_jenkins_job():
 def create_jenkins_job_pipeline():
     if request.method == "POST":
         job_name = request.form.get("job2")
-        server = jenkins.Jenkins('http://54.147.134.20:8080/', username='sivan_marom', password='1234')
+        server = jenkins.Jenkins('http://54.197.127.94:8080/', username='sivan_marom', password='1234')
         with open('templates/jenkins_job_pipeline.xml', 'r') as f:
             job_config_xml = f.read()
         server.create_job(job_name, job_config_xml)
