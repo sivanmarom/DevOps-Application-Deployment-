@@ -9,7 +9,7 @@ pipeline {
       stage('Run Python Script') {
             steps {
             sh 'apt-get update && apt-get install -y python3'
-              sh 'python3 "C:/Users/User/PycharmProjects/pythonProject-app-flask/project-app/mini_app.py"'
+              sh 'python3 "mini_app.py"'
             }
         }
 //         stage('Build Docker image') {
