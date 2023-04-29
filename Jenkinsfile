@@ -8,6 +8,7 @@ pipeline {
     stages {
       stage('Run Python Script') {
             steps {
+              sh 'apt-get update && apt-get install -y python3'
               sh 'python "C:/Users/User/PycharmProjects/pythonProject-app-flask/project-app/mini_app.py"'
             }
         }
