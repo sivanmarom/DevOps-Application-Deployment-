@@ -67,9 +67,9 @@ def launch_instance():
         if add_docker:
             user_data += "sudo apt update && sudo apt -y install docker.io\n"
         if add_jenkins:
-            user_data += "docker run -p 8080:8080 -p 50000:50000 -d --name jenkins --group-add docker -v jenkins_home:/var/jenkins_home -v /var/run/docker.sock:/var/run/docker.sock jenkins/jenkins:lts\n"
-            user_data += "sudo usermod -aG docker jenkins\n"
-            instance_name = request.form.get('instance_name')
+            user_data += 'docker run --name jenkins_master -p 8080:8080 -p 50000:50000 -d -v /var/run/docker.sock:/var/run/docker.sock -v jenkins_home:/var/jenkins_home jenkins/jenkins:lts\n'
+            user_data += 'docker exec -u root jenkins_master bash -c "apt-get update && apt-get -y install docker.io"\n'
+        instance_name = request.form.get('instance_name')
         instance_type = request.form.get('instance_type')
         key_pair_name = 'jenkins-master'
         image_id = request.form.get('image_id')
