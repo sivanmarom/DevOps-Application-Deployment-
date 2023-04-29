@@ -4,6 +4,7 @@ from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 import boto3
 import time
+import jenkins
 
 app = Flask(__name__)
 my_users = []
