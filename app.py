@@ -124,7 +124,7 @@ def create_docker_image():
 def create_jenkins_job():
     if request.method == "POST":
         job_name = request.form.get("job_test")
-        server = jenkins.Jenkins('http://54.167.24.140:8080/', username='sivan_marom', password='1234')
+        server = jenkins.Jenkins('http://54.197.127.94:8080/', username='sivan_marom', password='1234')
         with open('templates/jenkins_job.xml', 'r') as f:
             job_config_xml = f.read()
         server.create_job(job_name, job_config_xml)

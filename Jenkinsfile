@@ -6,14 +6,6 @@ pipeline {
     TIME = sh(script: 'date "+%Y-%m-%d %H:%M:%S"', returnStdout: true).trim()
       }
     stages {
-        stage('install python'){
-            steps{
-                    sh "exit"
-                    sh "docker exec -u root -it Jenkins_master bash"
-                    sh 'apt update'
-                    sh ' apt install python3 -y'
-            }
-        }
 //         stage('Build Docker image') {
 //             steps {
 //                 sh 'sudo docker build -t flask_image .'
