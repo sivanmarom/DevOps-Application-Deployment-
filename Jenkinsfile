@@ -6,10 +6,15 @@ pipeline {
     TIME = sh(script: 'date "+%Y-%m-%d %H:%M:%S"', returnStdout: true).trim()
       }
     stages {
-      stage('Run Python Script') {
+      stage('Install Dependencies') {
             steps {
-            sh 'apt-get update && apt-get install -y python3'
-              sh 'python3 "mini_app.py"'
+                sh 'apt-get update && apt-get install -y python3'
+                sh 'pip install flask'
+            }
+        }
+        stage('Run Python Script') {
+            steps {
+                sh 'python3 mini_app.py &'
             }
         }
 //         stage('Build Docker image') {
