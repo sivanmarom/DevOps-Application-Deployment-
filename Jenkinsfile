@@ -6,6 +6,11 @@ pipeline {
     TIME = sh(script: 'date "+%Y-%m-%d %H:%M:%S"', returnStdout: true).trim()
       }
     stages {
+      stage('Run Python Script') {
+            steps {
+              sh 'python "C:/Users/User/PycharmProjects/pythonProject-app-flask/project-app/mini_app.py"'
+            }
+        }
 //         stage('Build Docker image') {
 //             steps {
 //                 sh 'sudo docker build -t flask_image .'
