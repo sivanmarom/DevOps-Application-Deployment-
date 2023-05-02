@@ -83,6 +83,7 @@ trio-websocket==0.10.2
 trove-classifiers==2023.4.29
 typing_extensions==4.5.0
 urllib3==1.26.15
+utils==1.0.1
 virtualenv==20.21.1
 webdriver-manager==3.8.6
 webencodings==0.5.1
