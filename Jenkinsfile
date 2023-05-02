@@ -18,6 +18,12 @@ pipeline {
                sh "sudo docker run -it --name flaskApp -p 5000:5000 -d flask_image"
           }
     }
+      stage('Testing') {
+            steps {
+                sh 'cd project-flask-app'
+                sh 'pytest test-try.py::Test_class --html=report.html'
+            }
+        }
 //
 //
 //         stage("build user") {
