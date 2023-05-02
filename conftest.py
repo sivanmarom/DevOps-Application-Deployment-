@@ -7,7 +7,7 @@ from webdriver_manager.core.utils import ChromeType
 
 @pytest.fixture(scope="class")
 def setup():
-    chrome_driver_path = ChromeDriverManager(chrome_type=ChromeType.GOOGLE, log_level=0, path="/usr/bin/chromedriver").install()
+    chrome_driver_path = ChromeDriverManager(chrome_type=ChromeType.GOOGLE, output_path="/usr/bin/chromedriver").install()
     chrome_options = Options()
     chrome_options.add_experimental_option("detach", True)
     service_obj = Service(chrome_driver_path)
