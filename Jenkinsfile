@@ -21,7 +21,6 @@ pipeline {
       stage('Testing') {
             steps {
                 sh 'cd project-flask-app'
-                sh 'pip install pytest'
                 sh 'pytest test-try.py::Test_class --html=report.html'
             }
         }
