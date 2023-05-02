@@ -6,8 +6,9 @@ from selenium import webdriver
 
 @pytest.fixture(scope="class")
 def setup():
-    chrome_driver_path = "/usr/local/bin/chromedriver"
+    chrome_driver_path = ChromeDriverManager(version='latest').install()
     chrome_options = Options()
+    chrome_options.add_argument("--headless")
     chrome_options.add_experimental_option("detach", True)
     service_obj = Service(chrome_driver_path)
     driver = webdriver.Chrome(service=service_obj, options=chrome_options)
