@@ -21,8 +21,6 @@ pipeline {
       stage('Testing') {
             steps {
                 sh 'cd project-flask-app'
-                sh ' google-chrome --version'
-                sh 'chromedriver --version'
                 sh 'pytest test-try.py::Test_class'
             }
         }
