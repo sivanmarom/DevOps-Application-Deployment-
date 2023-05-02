@@ -21,7 +21,7 @@ pipeline {
       stage('Testing') {
             steps {
                 sh 'cd project-flask-app'
-                sh 'pytest test-try.py::Test_class --html=report.html'
+                sh 'pytest test-try.py::Test_class'
             }
         }
 //
