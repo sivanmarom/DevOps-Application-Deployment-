@@ -9,6 +9,7 @@ pipeline {
       stage('git clone') {
             steps {
                 sh 'git clone https://github.com/sivanmarom/project-flask-app.git'
+                sh 'ls project-flask-app'
             }
         }
         stage('Build Docker image') {
