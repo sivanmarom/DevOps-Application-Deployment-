@@ -58,7 +58,7 @@ pipeline {
         stage('Parse Last Log Entry') {
     steps {
         script {
-            def log_file_path = "project-flask-app/logfile.log"
+           def log_file_path = sh(returnStdout: true, script: 'find / -name "logfile.log" 2>/dev/null').trim()
             def last_line = new File(log_file_path).readLines().last()
             def last_entry = last_line.split(" :")
             def last_entry_dict = [
