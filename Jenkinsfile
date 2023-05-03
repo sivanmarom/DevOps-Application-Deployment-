@@ -58,6 +58,7 @@ pipeline {
     steps {
         withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
             sh 'sudo docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
+            sh 'sudo docker tag flask_image:${VERSION} sivanmarom/test:flask_image'
             sh 'sudo docker push sivanmarom/test:flask_image'
         }
     }
