@@ -23,6 +23,7 @@ pipeline {
             steps {
                 sh 'cd project-flask-app'
                 sh 'pytest test-try.py::Test_class --html=report.html'
+                sh 'cat logfile.log'
             }
         }
 
@@ -54,30 +55,7 @@ pipeline {
             }
         }
 
-        stage('Parse Log File') {
-    steps {
-        script {
-            def log_file_path = "${WORKSPACE}/project-flask-app/logfile.log"
-            def log_entries = []
-            def logger = logging.getLogger()
-            def fh = new logging.FileHandler(log_file_path)
-            def formatter = new logging.Formatter('%(asctime)s :%(levelname)s : %(message)s :')
-            fh.setFormatter(formatter)
-            logger.addHandler(fh)
-            logger.setLevel(logging.DEBUG)
-            new File(log_file_path).eachLine { line ->
-                def record = logger.makeRecord('record', logging.DEBUG, null, null, line, null, null)
-                log_entries.add([
-                    'timestamp': record.created,
-                    'level': record.levelname,
-                    'message': record.getMessage(),
-                ])
-            }
-            println "Parsed log entries: ${log_entries}"
-            env.LOG_ENTRIES = groovy.json.JsonOutput.toJson(log_entries)
-        }
-    }
-}
+
         stage('Push to Docker Hub') {
     steps {
         withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
