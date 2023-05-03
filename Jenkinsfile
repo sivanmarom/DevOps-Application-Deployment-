@@ -15,8 +15,8 @@ pipeline {
         }
         stage('Build Docker image') {
            steps {
-                sh 'sudo docker build -t flask_image:${VERSION} .'
-               sh "sudo docker run -it --name flaskApp -p 5000:5000 -d flask_image-${VERSION}"
+                sh 'sudo docker build -t flask_image .'
+               sh "sudo docker run -it --name flaskApp -p 5000:5000 -d flask_image"
           }
     }
       stage('Testing') {
@@ -58,7 +58,7 @@ pipeline {
     steps {
         withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
             sh 'sudo docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
-            sh 'sudo docker push sivanmarom/test:flask_image-${VERSION}'
+            sh 'sudo docker push sivanmarom/test:flask_image'
         }
     }
 }
