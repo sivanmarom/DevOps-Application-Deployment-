@@ -9,7 +9,7 @@ class Test_class(BaseClass):
         global driver
         log = self.log_conf()
         driver = setup
-        driver.get("http://54.91.70.187:5000/")
+        driver.get("http://204.236.214.151:5000/")
         sign_up = driver.find_element(By.CSS_SELECTOR, ".register_link")
         sign_up.click()
         name = 'sivan'
@@ -24,5 +24,5 @@ class Test_class(BaseClass):
             log.error(msg)
             raise AssertionError(msg)
         else:
-            log.info("Passed successfully")
+            log.info("Test Passed successfully")
 
