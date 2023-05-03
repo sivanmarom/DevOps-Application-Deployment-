@@ -52,6 +52,14 @@ pipeline {
                 }
             }
         }
+        stage('Push to Docker Hub') {
+    steps {
+        withCredentials([usernamePassword(credentialsId: 'sivanmarom-dockerhub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+            sh 'docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
+            sh 'docker push sivanmarom/test:latest'
+        }
+    }
+}
 // //
 // //         stage('stop conatiner'){
 // //             steps {
