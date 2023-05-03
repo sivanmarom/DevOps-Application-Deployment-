@@ -25,15 +25,14 @@ pipeline {
                 sh 'pytest test-try.py::Test_class --html=report.html'
             }
         }
-//
-//
-//         stage("build user") {
-//   steps{
-//     wrap([$class: 'BuildUser', useGitAuthor: true]) {
-//       sh 'echo ${BUILD_USER} >> Result.json'
-//     }
-//   }
-// }
+
+        stage("build user") {
+  steps{
+    wrap([$class: 'BuildUser', useGitAuthor: true]) {
+      sh 'echo ${BUILD_USER} >> Result.json'
+    }
+  }
+}
 //       stage("testing") {
 //     steps {
 //         script {
