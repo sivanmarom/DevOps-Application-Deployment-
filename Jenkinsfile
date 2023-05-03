@@ -4,6 +4,7 @@ pipeline {
     agent { label 'slave1' }
     environment {
     TIME = sh(script: 'date "+%Y-%m-%d %H:%M:%S"', returnStdout: true).trim()
+    VERSION = '1.0'
       }
     stages {
       stage('git clone') {
@@ -14,7 +15,7 @@ pipeline {
         }
         stage('Build Docker image') {
            steps {
-                sh 'sudo docker build -t flask_image .'
+                sh 'sudo docker build -t flask_image:${VERSION} .'
                sh "sudo docker run -it --name flaskApp -p 5000:5000 -d flask_image"
           }
     }
@@ -57,7 +58,7 @@ pipeline {
     steps {
         withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
             sh 'sudo docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
-            sh 'sudo docker push sivanmarom/test:latest'
+            sh 'sudo docker push sivanmarom/test:flask_image-${VERSION}'
         }
     }
 }
