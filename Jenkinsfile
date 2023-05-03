@@ -45,13 +45,13 @@ pipeline {
 //     }
 //       }
 //
-//         stage ('upload to s3 bucket'){
-//             steps{
-//                 withAWS(credentials: 'awscredentials'){
-//                      sh 'aws s3 cp Result*.json s3://test-result-flask-app'
-//                 }
-//             }
-//         }
+        stage ('upload to s3 bucket'){
+            steps{
+                withAWS(credentials: 'aws-credentials'){
+                     sh 'aws s3 cp report.html s3://test-result-flask-app'
+                }
+            }
+        }
 // //
 // //         stage('stop conatiner'){
 // //             steps {
