@@ -11,6 +11,7 @@ pipeline {
             steps {
                 sh 'rm -rf project-flask-app'
                 sh 'git clone https://github.com/sivanmarom/project-flask-app.git'
+                sh 'ls'
             }
         }
         stage('Build Docker image') {
