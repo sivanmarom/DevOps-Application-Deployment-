@@ -55,22 +55,11 @@ pipeline {
                 }
             }
         }
-        stage('Parse Last Log Entry') {
-    steps {
-        script {
-          def log_file_path = "${WORKSPACE}/logfile.log"
-            def last_line = new File(log_file_path).readLines().last()
-            def last_entry = last_line.split(" :")
-            def last_entry_dict = [
-                "timestamp": last_entry[0],
-                "level": last_entry[1],
-                "message": last_entry[2]
-            ]
-            println "Last log entry: ${last_entry_dict}"
-        }
-    }
+        stage('Parse Log File') {
+  steps {
+    sh 'python parse_log_file.py'
+  }
 }
-
 
         stage('Push to Docker Hub') {
     steps {
