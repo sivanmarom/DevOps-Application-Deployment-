@@ -39,19 +39,7 @@ pipeline {
                 }
             }
         }
-//       stage("testing") {
-//     steps {
-//         script {
-//            STATUS = sh(script: "curl -I \$(dig +short myip.opendns.com @resolver1.opendns.com):5000 | grep \"HTTP/1.1 200 OK\" | tr -d \"\\r\\n\"", returnStdout: true).trim()
-//             sh 'echo "$STATUS" >> Result.json'
-//             sh 'echo "$TIME" >> Result.json'
-//             withAWS(credentials: 'awscredentials', region: 'us-east-1') {
-//                 sh "aws dynamodb put-item --table-name test-result --item '{\"user\": {\"S\": \"${BUILD_USER}\"}, \"date\": {\"S\": \"${TIME}\"}, \"state\": {\"S\": \"${STATUS}\"}}'"
-//             }
-//         }
-//     }
-//       }
-//
+
         stage ('upload to s3 bucket'){
             steps{
                 withAWS(credentials: 'aws-credentials'){
@@ -63,16 +51,24 @@ pipeline {
     stage('Parse Log File') {
       steps {
         script {
-          def log_entry = sh(script: 'python3.8 parse_log_file.py', returnStdout: true).trim()
-      echo "Parsed log entry: ${log_entry}"
-//           def log_entry = new JsonSlurper().parseText(result)
-//           log_entry["user"] = "${BUILD_USER}"
-//           echo "Parsed log entry: ${log_entry}"
+           def log_entry = sh(script: 'python3.8 parse_log_file.py', returnStdout: true).trim()
+           def timestamp = log_entry.timestamp
+           def message = log_entry.message
+           withAWS(credentials: 'aws-credentials', region: 'us-east-1') {
+                 sh "aws dynamodb put-item --table-name project-result --item '{\"user\": {\"S\": \"${BUILD_USER}\"}, \"timestamp\": {\"S\": \"${timestamp}\"}, \"message\": {\"S\": \"${message}\"}}'"
         }
       }
     }
 
+  stage("testing") {
+     steps {
+         script {
 
+
+             }
+         }
+     }
+       }
         stage('Push to Docker Hub') {
     steps {
         withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
