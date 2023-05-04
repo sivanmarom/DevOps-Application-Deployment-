@@ -31,13 +31,14 @@ pipeline{
            }
         }
         stage("build user") {
-            steps{
-                wrap([$class: 'BuildUser', useGitAuthor: true]) {
-                    sh 'echo ${BUILD_USER} '
-
-                }
+    steps {
+        wrap([$class: 'BuildUser', useGitAuthor: true]) {
+            withEnv(['BUILD_USER=${BUILD_USER}']) {
+                sh 'echo ${BUILD_USER}'
             }
         }
+    }
+}
         stage ('upload to s3 bucket'){
             steps{
             dir('/home/ubuntu/workspace/pipeline-try/project-flask-app') {
@@ -54,7 +55,7 @@ pipeline{
                     def log_entry = sh(script: 'python3.8 parse_log_file.py', returnStdout: true).trim()
                     def (timestamp, message) = log_entry.split(',')
                     withAWS(credentials: 'aws-credentials', region: 'us-east-1') {
-                    sh "aws dynamodb put-item --table-name project-result --item '{\"user\": {\"S\": \"${BUILD_USER}\"}, \"timestamp\": {\"S\": \"${timestamp}\"}, \"message\": {\"S\": \"${message}\"}}'"
+                    sh "aws dynamodb put-item --table-name project-result --item '{\"user\": {\"S\": \"${env.BUILD_USER}\"}, \"timestamp\": {\"S\": \"${timestamp}\"}, \"message\": {\"S\": \"${message}\"}}'"
                     }
                 }
                 }
