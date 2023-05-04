@@ -58,7 +58,7 @@ pipeline {
         }
         stage('Parse Log File') {
   steps {
-    sh 'python parse_log_file.py'
+    sh 'python3.8 parse_log_file.py'
   }
 }
 
