@@ -13,15 +13,18 @@ pipeline {
                 sh 'git clone https://github.com/sivanmarom/project-flask-app.git'
                 sh 'ls'
                 sh 'cd project-flask-app'
+                 sh 'sudo docker build -t flask_image:${VERSION} .'
+               sh "sudo docker run -it --name flaskApp -p 5000:5000 -d flask_image:${VERSION}"
+
 
             }
         }
-        stage('Build Docker image') {
-           steps {
-                sh 'sudo docker build -t flask_image:${VERSION} .'
-               sh "sudo docker run -it --name flaskApp -p 5000:5000 -d flask_image:${VERSION}"
-          }
-    }
+//         stage('Build Docker image') {
+//            steps {
+//                 sh 'sudo docker build -t flask_image:${VERSION} .'
+//                sh "sudo docker run -it --name flaskApp -p 5000:5000 -d flask_image:${VERSION}"
+//           }
+//     }
       stage('Testing') {
             steps {
                 sh 'pytest test-try.py::Test_class --html=report.html'
