@@ -7,16 +7,17 @@ pipeline {
     VERSION = '1.0'
       }
     stages {
-      stage('git clone') {
-            steps {
-               sh 'rm -rf *'
-                sh 'git clone https://github.com/sivanmarom/project-flask-app.git'
-                sh 'ls'
-                sh 'cd project-flask-app'
-            }
-        }
+//       stage('git clone') {
+//             steps {
+//                sh 'rm -rf *'
+//                 sh 'git clone https://github.com/sivanmarom/project-flask-app.git'
+//                 sh 'ls'
+//
+//             }
+//         }
         stage('Build Docker image') {
            steps {
+                sh 'cd project-flask-app'
                 sh 'sudo docker build -t flask_image:${VERSION} .'
                sh "sudo docker run -it --name flaskApp -p 5000:5000 -d flask_image:${VERSION}"
           }
