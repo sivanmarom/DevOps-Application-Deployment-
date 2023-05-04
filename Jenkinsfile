@@ -11,6 +11,7 @@ pipeline {
     stage('git clone') {
     steps {
         dir('/home/ubuntu/workspace/pipeline-try') {
+            sh 'rm -rf *'
             sh 'git clone https://github.com/sivanmarom/project-flask-app.git'
             sh 'cd project-flask-app'
             sh 'ls'
