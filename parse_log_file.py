@@ -1,7 +1,7 @@
 with open("logfile.log", "r") as f:
     last_line = f.readlines()[-1]
-    entry = last_line.strip().split(" :")
+    entry = last_line.strip().split(",")
     timestamp = entry[0]
     message = entry[2]
 
-print(f"{timestamp},{message}")
+print(f"{timestamp} {message}")
