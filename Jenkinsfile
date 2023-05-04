@@ -1,6 +1,7 @@
 
 
 pipeline {
+import json
     agent { label 'slave1' }
     environment {
     TIME = sh(script: 'date "+%Y-%m-%d %H:%M:%S"', returnStdout: true).trim()
@@ -58,9 +59,12 @@ pipeline {
         }
         stage('Parse Log File') {
   steps {
-    sh 'python3.8 parse_log_file.py'
+    script {
+      def result = sh(script: 'python3.8 parse_log_file.py', returnStdout: true).trim()
+      def log_entry = json.loads(result)
+      echo "Parsed log entry: ${log_entry}"
+    }
   }
-}
 
         stage('Push to Docker Hub') {
     steps {
