@@ -12,6 +12,7 @@ pipeline {
                sh 'rm -rf *'
                 sh 'git clone https://github.com/sivanmarom/project-flask-app.git'
                 sh 'ls'
+                sh 'cd project-flask-app'
             }
         }
         stage('Build Docker image') {
@@ -22,7 +23,6 @@ pipeline {
     }
       stage('Testing') {
             steps {
-                sh 'cd project-flask-app'
                 sh 'pytest test-try.py::Test_class --html=report.html'
                 sh 'cat logfile.log'
             }
