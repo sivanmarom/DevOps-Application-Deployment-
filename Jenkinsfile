@@ -54,7 +54,7 @@ pipeline{
                  dir('/home/ubuntu/workspace/pipeline-try/project-flask-app') {
                 script {
                     def log_entry = sh(script: 'python3.8 parse_log_file.py', returnStdout: true).trim()
-                    sh'echo log_entry'
+                    echo log_entry
 //                     def (timestamp, message) = log_entry.split(':')
 //                     withAWS(credentials: 'aws-credentials', region: 'us-east-1') {
 //                     sh "aws dynamodb put-item --table-name project-result --item '{\"user\": {\"S\": \"${env.BUILD_USER}\"}, \"timestamp\": {\"S\": \"${timestamp}\"}, \"message\": {\"S\": \"${message}\"}}'"
