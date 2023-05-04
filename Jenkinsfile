@@ -59,7 +59,7 @@ pipeline {
                 }
             }
         }
- stages {
+
     stage('Parse Log File') {
       steps {
         script {
@@ -71,7 +71,7 @@ pipeline {
       }
     }
   }
-}
+
 
         stage('Push to Docker Hub') {
     steps {
