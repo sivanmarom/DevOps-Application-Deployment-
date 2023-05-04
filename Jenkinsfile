@@ -18,7 +18,7 @@ pipeline{
         }
         stage('Build Docker image') {
            steps {
-                dir('/home/ubuntu/workspace/pipeline-try') {
+                dir('/home/ubuntu/workspace/pipeline-try/project-flask-app') {
                 sh 'sudo docker build -t flask_image:${VERSION} .'
                sh "sudo docker run -it --name flaskApp -p 5000:5000 -d flask_image:${VERSION}"
           }
