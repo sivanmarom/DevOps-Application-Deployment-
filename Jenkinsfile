@@ -7,14 +7,14 @@ pipeline{
     stages{
         stage('git clone') {
             steps {
-            dir('/home/ubuntu/workspace/pipeline-try') {
-                sh 'rm -rf *'
-                sh 'git clone https://github.com/sivanmarom/project-flask-app.git'
-            sh 'cd project-flask-app'
-            sh 'ls'
+                dir('/home/ubuntu/workspace/pipeline-try') {
+                    sh 'rm -rf *'
+                    sh 'git clone https://github.com/sivanmarom/project-flask-app.git'
+                    sh 'cd project-flask-app'
+                    sh 'ls'
+                }
             }
         }
-     }
         stage('Build Docker image') {
            steps {
                 sh 'sudo docker build -t flask_image:${VERSION} .'
@@ -27,15 +27,15 @@ pipeline{
                 sh 'cat logfile.log'
             }
         }
-         stage("build user") {
+        stage("build user") {
             steps{
                 wrap([$class: 'BuildUser', useGitAuthor: true]) {
                     sh 'echo ${BUILD_USER} '
 
                 }
             }
-            }
-            stage ('upload to s3 bucket'){
+        }
+        stage ('upload to s3 bucket'){
             steps{
                 withAWS(credentials: 'aws-credentials'){
                      sh 'aws s3 cp report.html s3://test-result-flask-app'
@@ -44,14 +44,15 @@ pipeline{
         }
         stage('Parse Log File') {
             steps {
-             script {
-                def log_entry = sh(script: 'python3.8 parse_log_file.py', returnStdout: true).trim()
-                 def timestamp = log_entry.timestamp
-                  def message = log_entry.message
-                 withAWS(credentials: 'aws-credentials', region: 'us-east-1') {
-                 sh "aws dynamodb put-item --table-name project-result --item '{\"user\": {\"S\": \"${BUILD_USER}\"}, \"timestamp\": {\"S\": \"${timestamp}\"}, \"message\": {\"S\": \"${message}\"}}'"
+                script {
+                    def log_entry = sh(script: 'python3.8 parse_log_file.py', returnStdout: true).trim()
+                    def timestamp = log_entry.timestamp
+                    def message = log_entry.message
+                    withAWS(credentials: 'aws-credentials', region: 'us-east-1') {
+                    sh "aws dynamodb put-item --table-name project-result --item '{\"user\": {\"S\": \"${BUILD_USER}\"}, \"timestamp\": {\"S\": \"${timestamp}\"}, \"message\": {\"S\": \"${message}\"}}'"
+                    }
+                }
             }
-        }
         }
         stage('Push to Docker Hub') {
         steps {
@@ -63,7 +64,7 @@ pipeline{
             }
         }
     }
-    post {
+  post {
         always {
             deleteDir()
         }
