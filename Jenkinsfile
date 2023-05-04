@@ -1,14 +1,12 @@
-
-pipeline {
-
+pipeline{
     agent { label 'slave1' }
     environment {
     TIME = sh(script: 'date "+%Y-%m-%d %H:%M:%S"', returnStdout: true).trim()
     VERSION = '1.0'
     }
-    stages {
+    stages{
         stage('git clone') {
-        steps {
+            steps {
             dir('/home/ubuntu/workspace/pipeline-try') {
                 sh 'rm -rf *'
                 sh 'git clone https://github.com/sivanmarom/project-flask-app.git'
@@ -29,8 +27,7 @@ pipeline {
                 sh 'cat logfile.log'
             }
         }
-
-        stage("build user") {
+         stage("build user") {
             steps{
                 wrap([$class: 'BuildUser', useGitAuthor: true]) {
                     sh 'echo ${BUILD_USER} '
@@ -38,15 +35,13 @@ pipeline {
                 }
             }
             }
-
-        stage ('upload to s3 bucket'){
+            stage ('upload to s3 bucket'){
             steps{
                 withAWS(credentials: 'aws-credentials'){
                      sh 'aws s3 cp report.html s3://test-result-flask-app'
                 }
             }
         }
-
         stage('Parse Log File') {
             steps {
              script {
@@ -58,8 +53,7 @@ pipeline {
             }
         }
         }
-
-         stage('Push to Docker Hub') {
+        stage('Push to Docker Hub') {
         steps {
         withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
             sh 'sudo docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
@@ -68,12 +62,10 @@ pipeline {
                 }
             }
         }
-
     }
     post {
         always {
             deleteDir()
         }
     }
-
 }
