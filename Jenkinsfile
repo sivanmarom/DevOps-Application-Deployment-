@@ -1,7 +1,6 @@
 pipeline{
 
     agent { label 'slave1' }
-    import groovy.json.JsonSlurper
     environment {
     TIME = sh(script: 'date "+%Y-%m-%d %H:%M:%S"', returnStdout: true).trim()
     VERSION = '1.0'
@@ -47,6 +46,7 @@ pipeline{
         stage('Parse Log File') {
             steps {
                 script {
+                    import groovy.json.JsonSlurper
                     def log_entry = sh(script: 'python3.8 parse_log_file.py', returnStdout: true).trim()
                     def jsonSlurper = new JsonSlurper()
                     def jsonObject = jsonSlurper.parseText(log_entry)
