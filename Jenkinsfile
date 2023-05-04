@@ -34,8 +34,7 @@ pipeline {
             steps{
                 wrap([$class: 'BuildUser', useGitAuthor: true]) {
                     sh 'echo ${BUILD_USER} '
-                    withEnv(["BUILD_USER=${BUILD_USER}"]) {
-                    }
+
                 }
             }
         }
@@ -64,7 +63,7 @@ pipeline {
     script {
       def result = sh(script: 'python3.8 parse_log_file.py', returnStdout: true).trim()
       def log_entry = json.loads(result)
-      log_entry["user"] = BUILD_USER
+      log_entry["user"] = '$BUILD_USER'
       echo "Parsed log entry: ${log_entry}"
     }
   }
