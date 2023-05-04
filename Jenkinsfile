@@ -11,8 +11,6 @@ pipeline{
                 dir('/home/ubuntu/workspace/pipeline-try') {
                     sh 'rm -rf *'
                     sh 'git clone https://github.com/sivanmarom/project-flask-app.git'
-                    sh 'cd project-flask-app'
-                    sh 'ls'
                 }
             }
         }
@@ -26,9 +24,11 @@ pipeline{
         }
         stage('Testing') {
             steps {
+                 dir('/home/ubuntu/workspace/pipeline-try/project-flask-app') {
                 sh 'pytest test-try.py::Test_class --html=report.html'
                 sh 'cat logfile.log'
             }
+           }
         }
         stage("build user") {
             steps{
