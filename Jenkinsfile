@@ -31,7 +31,7 @@ pipeline {
         stage("build user") {
   steps{
     wrap([$class: 'BuildUser', useGitAuthor: true]) {
-      sh 'echo ${BUILD_USER} >> Result.json'
+      sh 'echo ${BUILD_USER} '
     }
   }
 }
