@@ -9,7 +9,7 @@ pipeline {
     stages {
       stage('git clone') {
             steps {
-                sh 'rm -rf project-flask-app'
+               sh 'rm -rf *'
                 sh 'git clone https://github.com/sivanmarom/project-flask-app.git'
                 sh 'ls'
             }
