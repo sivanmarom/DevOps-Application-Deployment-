@@ -8,16 +8,16 @@ pipeline {
     VERSION = '1.0'
       }
     stages {
-    stage('git clone') {
-    steps {
-        dir('/home/ubuntu/workspace/pipeline-try') {
-            sh 'rm -rf *'
-            sh 'git clone https://github.com/sivanmarom/project-flask-app.git'
+        stage('git clone') {
+        steps {
+            dir('/home/ubuntu/workspace/pipeline-try') {
+                sh 'rm -rf *'
+                sh 'git clone https://github.com/sivanmarom/project-flask-app.git'
             sh 'cd project-flask-app'
             sh 'ls'
         }
     }
-}
+    }
         stage('Build Docker image') {
            steps {
                 sh 'sudo docker build -t flask_image:${VERSION} .'
@@ -66,21 +66,12 @@ pipeline {
             sh 'sudo docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
             sh 'sudo docker tag flask_image:${VERSION} sivanmarom/test:flask_image'
             sh 'sudo docker push sivanmarom/test:flask_image'
+            }
         }
-    }
-}
-// //
-// //         stage('stop conatiner'){
-// //             steps {
-// //
-// //                 sh' sudo docker stop flaskApp'
-// //                 sh 'sudo docker rm flaskApp'
-// //             }
-// //         }
     }
     post {
         always {
             deleteDir()
         }
     }
-}
+
