@@ -55,23 +55,23 @@ pipeline{
                 script {
                     def log_entry = sh(script: 'python3.8 parse_log_file.py', returnStdout: true).trim()
                     echo log_entry
-//                     def (timestamp, message) = log_entry.split(' ')
-//                     withAWS(credentials: 'aws-credentials', region: 'us-east-1') {
-//                     sh "aws dynamodb put-item --table-name project-result --item '{\"user\": {\"S\": \"${env.BUILD_USER}\"}, \"timestamp\": {\"S\": \"${timestamp}\"}, \"message\": {\"S\": \"${message}\"}}'"
-//                     }
+                    def (timestamp, message) = log_entry.split(' ')
+                    withAWS(credentials: 'aws-credentials', region: 'us-east-1') {
+                    sh "aws dynamodb put-item --table-name project-result --item '{\"user\": {\"S\": \"${env.BUILD_USER}\"}, \"timestamp\": {\"S\": \"${timestamp}\"}, \"message\": {\"S\": \"${message}\"}}'"
+                    }
                 }
                 }
             }
         }
-//         stage('Push to Docker Hub') {
-//         steps {
-//         withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-//             sh 'sudo docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
-//             sh 'sudo docker tag flask_image:${VERSION} sivanmarom/test:flask_image'
-//             sh 'sudo docker push sivanmarom/test:flask_image'
-//                 }
-//             }
-//         }
+        stage('Push to Docker Hub') {
+        steps {
+        withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+            sh 'sudo docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
+            sh 'sudo docker tag flask_image:${VERSION} sivanmarom/test:flask_image'
+            sh 'sudo docker push sivanmarom/test:flask_image'
+                }
+            }
+        }
     }
   post {
         always {
