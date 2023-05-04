@@ -1,5 +1,7 @@
 pipeline{
+
     agent { label 'slave1' }
+    import groovy.json.JsonSlurper
     environment {
     TIME = sh(script: 'date "+%Y-%m-%d %H:%M:%S"', returnStdout: true).trim()
     VERSION = '1.0'
@@ -46,10 +48,12 @@ pipeline{
             steps {
                 script {
                     def log_entry = sh(script: 'python3.8 parse_log_file.py', returnStdout: true).trim()
-                    def timestamp = log_entry.get('timestamp')
-                    def message = log_entry.get('message')
+                    def jsonSlurper = new JsonSlurper()
+                    def jsonObject = jsonSlurper.parseText(log_entry)
+                    def timestamp = jsonObject.timestamp
+                    def message = jsonObject.message
                     withAWS(credentials: 'aws-credentials', region: 'us-east-1') {
-                    sh "aws dynamodb put-item --table-name project-result --item '{\"user\": {\"S\": \"${BUILD_USER}\"}, \"timestamp\": {\"S\": \"${timestamp}\"}, \"message\": {\"S\": \"${message}\"}}'"
+                        sh "aws dynamodb put-item --table-name project-result --item '{\"user\": {\"S\": \"${BUILD_USER}\"}, \"timestamp\": {\"S\": \"${timestamp}\"}, \"message\": {\"S\": \"${message}\"}}'"
                     }
                 }
             }
