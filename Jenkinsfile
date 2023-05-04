@@ -40,19 +40,23 @@ pipeline{
         }
         stage ('upload to s3 bucket'){
             steps{
+            dir('/home/ubuntu/workspace/pipeline-try/project-flask-app') {
                 withAWS(credentials: 'aws-credentials'){
                      sh 'aws s3 cp report.html s3://test-result-flask-app'
+                }
                 }
             }
         }
         stage('Parse Log File') {
             steps {
+                 dir('/home/ubuntu/workspace/pipeline-try/project-flask-app') {
                 script {
                     def log_entry = sh(script: 'python3.8 parse_log_file.py', returnStdout: true).trim()
                     def (timestamp, message) = log_entry.split(',')
                     withAWS(credentials: 'aws-credentials', region: 'us-east-1') {
                     sh "aws dynamodb put-item --table-name project-result --item '{\"user\": {\"S\": \"${BUILD_USER}\"}, \"timestamp\": {\"S\": \"${timestamp}\"}, \"message\": {\"S\": \"${message}\"}}'"
                     }
+                }
                 }
             }
         }
