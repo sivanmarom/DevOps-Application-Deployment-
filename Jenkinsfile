@@ -46,7 +46,7 @@ pipeline{
         stage('Parse Log File') {
             steps {
                 script {
-                    idef log_entry = sh(script: 'python3.8 parse_log_file.py', returnStdout: true).trim()
+                    def log_entry = sh(script: 'python3.8 parse_log_file.py', returnStdout: true).trim()
                     def jsonObject = new JsonSlurper().parseText(log_entry)
                     def timestamp = jsonObject.timestamp
                     def message = jsonObject.message
