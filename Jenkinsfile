@@ -60,7 +60,6 @@ pipeline {
  stage('Parse Log File') {
   steps {
     script {
-      import json // import json library inside the script block
       def result = sh(script: 'python3.8 parse_log_file.py', returnStdout: true).trim()
       def log_entry = json.loads(result)
       echo "Parsed log entry: ${log_entry}"
