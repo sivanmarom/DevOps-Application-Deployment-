@@ -33,9 +33,10 @@ pipeline{
         stage("build user") {
     steps {
         wrap([$class: 'BuildUser', useGitAuthor: true]) {
-            withEnv(['BUILD_USER=${BUILD_USER}']) {
-                sh 'echo ${BUILD_USER}'
+           environment {
+                BUILD_USER = "${BUILD_USER}"
             }
+            sh 'echo ${BUILD_USER}'
         }
     }
 }
