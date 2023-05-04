@@ -64,9 +64,10 @@ pipeline {
       steps {
         script {
           def result = sh(script: 'python3.8 parse_log_file.py', returnStdout: true).trim()
-          def log_entry = new JsonSlurper().parseText(result)
-          log_entry["user"] = "${BUILD_USER}"
-          echo "Parsed log entry: ${log_entry}"
+          echo result
+//           def log_entry = new JsonSlurper().parseText(result)
+//           log_entry["user"] = "${BUILD_USER}"
+//           echo "Parsed log entry: ${log_entry}"
         }
       }
     }
