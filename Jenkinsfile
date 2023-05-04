@@ -60,16 +60,7 @@ pipeline {
       }
     }
 
-  stage("testing") {
-     steps {
-         script {
-
-
-             }
-         }
-     }
-       }
-        stage('Push to Docker Hub') {
+         stage('Push to Docker Hub') {
     steps {
         withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
             sh 'sudo docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
