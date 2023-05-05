@@ -9,7 +9,7 @@
       <configVersion>2</configVersion>
       <userRemoteConfigs>
         <hudson.plugins.git.UserRemoteConfig>
-          <url>https://github.com/sivanmarom/project-flask-app/production.git</url>
+          <url>https://github.com/sivanmarom/project-flask-app.git</url>
           <credentialsId>git-credentials</credentialsId>
         </hudson.plugins.git.UserRemoteConfig>
       </userRemoteConfigs>
@@ -22,7 +22,7 @@
       <submoduleCfg class="list"/>
       <extensions/>
     </scm>
-    <scriptPath>Jenkinsfile</scriptPath>
+    <scriptPath>production/Jenkinsfile</scriptPath>
   </definition>
   <triggers/>
 </flow-definition>
