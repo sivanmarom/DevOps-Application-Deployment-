@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('dockerhub pull') {
             steps {
-                sh 'docker pull sivanmarom/test:flask_image-3.0'
+                sh 'sudo docker pull sivanmarom/test:flask_image-3.0'
 
             }
         }
