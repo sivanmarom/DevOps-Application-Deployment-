@@ -3,7 +3,7 @@ pipeline{
     agent { label 'slave1' }
     environment {
     TIME = sh(script: 'date "+%Y-%m-%d %H:%M:%S"', returnStdout: true).trim()
-    VERSION_FILE = 'version.txt'
+    VERSION_FILE = 'home/ubuntu/version.txt'
     VERSION = sh(script: 'if [ -f "$VERSION_FILE" ]; then cat "$VERSION_FILE"; else echo "1.0"; fi', returnStdout: true).trim()
     }
     stages{
@@ -69,8 +69,13 @@ pipeline{
             sh 'sudo docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
             sh 'sudo docker tag flask_image:${VERSION} sivanmarom/test:flask_image'
             sh 'sudo docker push sivanmarom/test:flask_image'
-            sh 'if [ $? -eq 0 ]; then VERSION=$(echo $VERSION+1 | bc); echo $VERSION > $VERSION_FILE; fi'
+            sh 'if [ $? -eq 0 ]; then VERSION=$(echo $VERSION+1 | bc); echo $VERSION > /home/ubuntu/version.txt; fi'
                 }
+            }
+        }
+        stage('save version.txt'){
+        steps{
+
             }
         }
     }
