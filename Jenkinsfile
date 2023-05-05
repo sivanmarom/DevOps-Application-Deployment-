@@ -57,8 +57,10 @@ pipeline{
                 echo log_entry
                 def (timestamp, message) = log_entry.split(',')
                 message = message.replaceAll('"', '\\"') // add this line to escape quotation marks
+                echo message
+                echo timestamp
                 withAWS(credentials: 'aws-credentials', region: 'us-east-1') {
-                    sh "aws dynamodb put-item --table-name project-result --item '{\"user\": {\"S\": \"${env.BUILD_USER}\"}, \"timestamp\": {\"S\": \"${timestamp}\"}, \"message\": {\"S\": \"${message}\"}}'"
+                 sh "aws dynamodb put-item --table-name project-result --item \"{\\\"user\\\": {\\\"S\\\": \\\"${env.BUILD_USER}\\\"}, \\\"timestamp\\\": {\\\"S\\\": \\\"${timestamp}\\\"}, \\\"message\\\": {\\\"S\\\": \\\"${message}\\\"}}\""
                 }
             }
         }
