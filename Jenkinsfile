@@ -4,7 +4,8 @@ pipeline{
     environment {
     TIME = sh(script: 'date "+%Y-%m-%d %H:%M:%S"', returnStdout: true).trim()
     VERSION_FILE = 'home/ubuntu/version.txt'
-    VERSION = sh(script: 'if [ -f "$VERSION_FILE" ]; then cat "$VERSION_FILE"; else echo "1.0"; fi', returnStdout: true).trim()
+    VERSION = sh(script: 'cat "$VERSION_FILE"', returnStdout: true).trim() ?: "1.0"
+
     }
     stages{
         stage('git clone') {
@@ -69,6 +70,13 @@ pipeline{
             sh 'sudo docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
             sh 'sudo docker tag flask_image:${VERSION} sivanmarom/test:flask_image-${VERSION}'
             sh 'sudo docker push sivanmarom/test:flask_image-${VERSION}'
+            script{
+                if (VERSION_FILE.exists()){
+                def new_version = VERSION.toFloat() + 1
+                VERSION_FILE.write(new_version)
+                VERSION =new_version
+                }
+            }
             sh 'if [ $? -eq 0 ]; then VERSION=$(echo $VERSION+1 | bc); echo $VERSION > /home/ubuntu/version.txt; fi'
                 }
             }
