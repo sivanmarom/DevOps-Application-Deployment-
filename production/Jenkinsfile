@@ -5,6 +5,7 @@ pipeline {
         stage('dockerhub pull') {
             steps {
                 sh 'sudo docker pull sivanmarom/test:flask_image-3.0'
+                sh 'sudo docker run -it --name flaskApp -p 5000:5000 -d flask_image-3.0'
 
             }
         }
