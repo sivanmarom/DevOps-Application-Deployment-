@@ -135,8 +135,13 @@ def create_jenkins_job_pipeline():
     if request.method == "POST":
         job_name = request.form.get("job2")
         server = jenkins.Jenkins('http://54.234.54.236:8080/', username='sivan_marom', password='1234')
-        with open('templates/jenkins_job_pipeline.xml', 'r') as f:
-            job_config_xml = f.read()
+        workspace = request.form.get('workspace')
+        if workspace == 'Testing':
+            with open('templates/jenkins_job_pipeline.xml', 'r') as f:
+                job_config_xml = f.read()
+        elif workspace == 'Production':
+            with open('templates/jenkins_job_pipeline_production.xml', 'r') as f:
+                job_config_xml = f.read()
         server.create_job(job_name, job_config_xml)
         server.build_job(job_name)
         return "job created successfully"
