@@ -4,7 +4,7 @@ pipeline{
     environment {
     TIME = sh(script: 'date "+%Y-%m-%d %H:%M:%S"', returnStdout: true).trim()
     VERSION_FILE = 'home/ubuntu/version.txt'
-    VERSION = sh(script: 'cat "${VERSION_FILE}" || echo "1.0"', returnStdout: true).trim()
+    VERSION = sh(script: "cat ${VERSION_FILE} || echo '1.0'", returnStdout: true).trim()
     }
     stages{
         stage('git clone') {
