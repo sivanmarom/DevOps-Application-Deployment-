@@ -69,13 +69,6 @@ pipeline{
             sh 'sudo docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
             sh 'sudo docker tag flask_image:${VERSION} sivanmarom/test:flask_image-${VERSION}'
             sh 'sudo docker push sivanmarom/test:flask_image-${VERSION}'
-            script{
-                if (VERSION_FILE.exists()){
-                def new_version = VERSION.toFloat() + 1
-                VERSION_FILE.write(new_version)
-                VERSION =new_version
-                }
-            }
             sh 'if [ $? -eq 0 ]; then VERSION=$(echo $VERSION+1 | bc); echo $VERSION > /home/ubuntu/version.txt; fi'
                 }
             }
