@@ -5,6 +5,6 @@ with open("logfile.log", "r") as f:
     print(entry)
     print(len(entry))
     timestamp = entry[0] + ":" + entry[1]
-    message = entry[4].strip()
+    message = entry[4].strip().replace('"', '\\"')
 
 print(f"{timestamp}, {message}")
