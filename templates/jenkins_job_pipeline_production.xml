@@ -24,5 +24,14 @@
     </scm>
     <scriptPath>production/Jenkinsfile</scriptPath>
   </definition>
-  <triggers/>
+  <triggers>
+    <hudson.triggers.BuildTrigger>
+      <childProjects>Test</childProjects>
+      <threshold>
+        <name>SUCCESS</name>
+        <ordinal>0</ordinal>
+        <color>BLUE</color>
+      </threshold>
+    </hudson.triggers.BuildTrigger>
+  </triggers>
 </flow-definition>
