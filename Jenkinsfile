@@ -73,11 +73,6 @@ pipeline{
                 }
             }
         }
-        stage('save version.txt'){
-        steps{
-
-            }
-        }
     }
   post {
         always {
