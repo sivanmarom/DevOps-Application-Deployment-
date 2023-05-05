@@ -67,8 +67,8 @@ pipeline{
         steps {
         withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
             sh 'sudo docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
-            sh 'sudo docker tag flask_image:${VERSION} sivanmarom/test:flask_image'
-            sh 'sudo docker push sivanmarom/test:flask_image'
+            sh 'sudo docker tag flask_image:${VERSION} sivanmarom/test:flask_image-${VERSION}'
+            sh 'sudo docker push sivanmarom/test:flask_image-${VERSION}'
             sh 'if [ $? -eq 0 ]; then VERSION=$(echo $VERSION+1 | bc); echo $VERSION > /home/ubuntu/version.txt; fi'
                 }
             }
