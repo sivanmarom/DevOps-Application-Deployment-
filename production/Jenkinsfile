@@ -2,9 +2,10 @@ pipeline {
     agent { label 'prod1' }
 
     stages {
-        stage('Hello') {
+        stage('dockerhub pull') {
             steps {
-                echo 'Hello World'
+                sh 'docker pull sivanmarom/test:flask_image-3.0'
+
             }
         }
     }
