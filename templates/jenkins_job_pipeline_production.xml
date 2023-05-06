@@ -23,16 +23,16 @@
       <extensions/>
     </scm>
     <scriptPath>production/Jenkinsfile</scriptPath>
-    <triggers>
-      <hudson.plugins.build__trigger.BuildTrigger>
-        <childProjects>Test</childProjects>
-        <threshold>
-          <name>STABLE</name>
-          <ordinal>1</ordinal>
-          <color>BLUE</color>
-          <completeBuild>true</completeBuild>
-        </threshold>
-      </hudson.plugins.build__trigger.BuildTrigger>
-    </triggers>
   </definition>
+  <triggers>
+    <hudson.plugins.build__trigger.BuildTrigger>
+      <childProjects>Test</childProjects>
+      <threshold>
+        <name>STABLE</name>
+        <ordinal>1</ordinal>
+        <color>BLUE</color>
+        <completeBuild>true</completeBuild>
+      </threshold>
+    </hudson.plugins.build__trigger.BuildTrigger>
+  </triggers>
 </flow-definition>
