@@ -25,14 +25,10 @@
     <scriptPath>production/Jenkinsfile</scriptPath>
   </definition>
   <triggers>
-    <hudson.plugins.build__trigger.BuildTrigger>
-      <childProjects>Test</childProjects>
-      <threshold>
-        <name>STABLE</name>
-        <ordinal>1</ordinal>
-        <color>BLUE</color>
-        <completeBuild>true</completeBuild>
-      </threshold>
-    </hudson.plugins.build__trigger.BuildTrigger>
+    <jenkins.triggers.ReverseBuildTrigger>
+      <spec>SUCCESSFUL</spec>
+      <upstreamProjects>Test</upstreamProjects>
+      <thresholdName>hudson.model.Result.SUCCESS</thresholdName>
+    </jenkins.triggers.ReverseBuildTrigger>
   </triggers>
 </flow-definition>
