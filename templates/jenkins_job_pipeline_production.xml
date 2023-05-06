@@ -23,12 +23,22 @@
       <extensions/>
     </scm>
     <scriptPath>production/Jenkinsfile</scriptPath>
-    <triggers>
-      <jenkins.triggers.ReverseBuildTrigger>
-        <spec>SUCCESSFUL</spec>
-        <upstreamProjects>Test</upstreamProjects>
-        <thresholdName>hudson.model.Result.SUCCESS</thresholdName>
-      </jenkins.triggers.ReverseBuildTrigger>
-    </triggers>
   </definition>
+  <triggers>
+    <hudson.plugins.build__trigger.BuildTrigger>
+      <childProjects>
+        <hudson.plugins.build__trigger.ChildProject>
+          <projectName>Test</projectName>
+          <triggerWithNoParameters>false</triggerWithNoParameters>
+          <triggerFromChildProjects>false</triggerFromChildProjects>
+        </hudson.plugins.build__trigger.ChildProject>
+      </childProjects>
+      <threshold>
+        <name>SUCCESS</name>
+        <ordinal>0</ordinal>
+        <color>BLUE</color>
+        <completeBuild>true</completeBuild>
+      </threshold>
+    </hudson.plugins.build__trigger.BuildTrigger>
+  </triggers>
 </flow-definition>
