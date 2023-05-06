@@ -24,31 +24,4 @@
     </scm>
     <scriptPath>production/Jenkinsfile</scriptPath>
   </definition>
-   <triggers>
-    <hudson.plugins.parameterizedtrigger.BuildTrigger>
-      <configs>
-        <hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
-          <projects>Test</projects>
-          <triggerWithNoParameters>false</triggerWithNoParameters>
-          <triggerFromChildProjects>true</triggerFromChildProjects>
-          <configs>
-            <hudson.plugins.parameterizedtrigger.PredefinedBuildParametersConfig>
-              <predefinedBuildParameters>BUILD_CAUSE=TRIGGERED_BY_PARENT_BUILD</predefinedBuildParameters>
-            </hudson.plugins.parameterizedtrigger.PredefinedBuildParametersConfig>
-          </configs>
-        </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
-      </configs>
-    </hudson.plugins.parameterizedtrigger.BuildTrigger>
-  </triggers>
-  <postbuilders>
-    <hudson.tasks.BuildTrigger>
-      <childProjects>Test</childProjects>
-      <threshold>
-        <name>STABLE</name>
-        <ordinal>1</ordinal>
-        <color>BLUE</color>
-        <completeBuild>true</completeBuild>
-      </threshold>
-    </hudson.tasks.BuildTrigger>
-  </postbuilders>
 </flow-definition>
