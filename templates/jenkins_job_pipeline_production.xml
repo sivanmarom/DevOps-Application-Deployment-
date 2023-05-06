@@ -24,14 +24,20 @@
     </scm>
     <scriptPath>production/Jenkinsfile</scriptPath>
   </definition>
-  <triggers>
-    <hudson.triggers.BuildTrigger>
-      <childProjects>Test</childProjects>
-      <threshold>
-        <name>SUCCESS</name>
-        <ordinal>0</ordinal>
-        <color>BLUE</color>
-      </threshold>
-    </hudson.triggers.BuildTrigger>
-  </triggers>
+<triggers>
+  <hudson.plugins.parameterizedtrigger.BuildTrigger>
+    <configs>
+      <hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
+        <projects>Test</projects>
+        <triggerWithNoParameters>false</triggerWithNoParameters>
+        <triggerFromChildProjects>true</triggerFromChildProjects>
+        <configs>
+          <hudson.plugins.parameterizedtrigger.PredefinedBuildParametersConfig>
+            <predefinedBuildParameters>BUILD_CAUSE=TRIGGERED_BY_PARENT_BUILD</predefinedBuildParameters>
+          </hudson.plugins.parameterizedtrigger.PredefinedBuildParametersConfig>
+        </configs>
+      </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
+    </configs>
+  </hudson.plugins.parameterizedtrigger.BuildTrigger>
+</triggers>
 </flow-definition>

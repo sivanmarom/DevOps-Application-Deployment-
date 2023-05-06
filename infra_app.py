@@ -118,7 +118,7 @@ def create_docker_image():
     else:
         return render_template('docker_image.html')
 
-@app.route('/create_jenkins_job',methods=['POST', 'GET'])
+@app.route('/jenkins_job',methods=['POST', 'GET'])
 def create_jenkins_job():
     if request.method == "POST":
         job_name = request.form.get("job_test")
@@ -128,9 +128,9 @@ def create_jenkins_job():
         server.create_job(job_name, job_config_xml)
         server.build_job(job_name)
         return "job created successfully"
-    return render_template('create_jenkins_job.html')
+    return render_template('jenkins_job.html')
 
-@app.route('/create_jenkins_job_pipeline', methods=['POST', 'GET'])
+@app.route('/jenkins_job_pipeline', methods=['POST', 'GET'])
 def create_jenkins_job_pipeline():
     if request.method == "POST":
         job_name = request.form.get("job2")
@@ -145,7 +145,7 @@ def create_jenkins_job_pipeline():
         server.create_job(job_name, job_config_xml)
         server.build_job(job_name)
         return "job created successfully"
-    return render_template('create_jenkins_job.html')
+    return render_template('jenkins_job.html')
 
 
 if __name__ == "__main__":

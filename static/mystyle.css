@@ -7,6 +7,7 @@ body {
   background-size: cover;
   font-family: cursive;
   opacity:0.85;
+  align-items: center;
 
 }
 
@@ -155,4 +156,18 @@ color:black;
 
 .button a {
   color: black;
+   font-size: 1.2em;
+  padding: 10px 20px;
+  margin: 10px;
+}
+
+.iam_user{
+float:center;
+background-color: white;
+text-align:left;
+align-items:center;
+}
+
+h3{
+align-items:center;
 }
