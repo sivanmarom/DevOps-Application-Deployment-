@@ -130,7 +130,7 @@ def create_jenkins_job():
         return "job created successfully"
     return render_template('jenkins_job.html')
 
-@app.route('/jenkins_job_pipeline', methods=['POST', 'GET'])
+@app.route('/jenkins_job', methods=['POST', 'GET'])
 def create_jenkins_job_pipeline():
     if request.method == "POST":
         job_name = request.form.get("job2")
