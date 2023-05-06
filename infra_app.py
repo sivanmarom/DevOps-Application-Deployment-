@@ -118,8 +118,8 @@ def create_docker_image():
     else:
         return render_template('docker_image.html')
 
-@app.route('/jenkins_job',methods=['POST', 'GET'])
-def create_jenkins_job():
+@app.route('/jenkins_job/freestyle',methods=['POST', 'GET'])
+def create_jenkins_job_freestyle():
     if request.method == "POST":
         job_name = request.form.get("job_test")
         server = jenkins.Jenkins('http://34.229.194.113:8080/', username='sivan_marom', password='1234')
@@ -130,7 +130,7 @@ def create_jenkins_job():
         return "job created successfully"
     return render_template('jenkins_job.html')
 
-@app.route('/jenkins_job', methods=['POST', 'GET'])
+@app.route('/jenkins_job/pipeline', methods=['POST', 'GET'])
 def create_jenkins_job_pipeline():
     if request.method == "POST":
         job_name = request.form.get("job2")
