@@ -24,7 +24,7 @@
     </scm>
     <scriptPath>production/Jenkinsfile</scriptPath>
   </definition>
-  <triggers>
+   <triggers>
     <hudson.plugins.parameterizedtrigger.BuildTrigger>
       <configs>
         <hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
@@ -40,4 +40,15 @@
       </configs>
     </hudson.plugins.parameterizedtrigger.BuildTrigger>
   </triggers>
+  <postbuilders>
+    <hudson.tasks.BuildTrigger>
+      <childProjects>Test</childProjects>
+      <threshold>
+        <name>STABLE</name>
+        <ordinal>1</ordinal>
+        <color>BLUE</color>
+        <completeBuild>true</completeBuild>
+      </threshold>
+    </hudson.tasks.BuildTrigger>
+  </postbuilders>
 </flow-definition>
