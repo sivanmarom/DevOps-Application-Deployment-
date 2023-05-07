@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <flow-definition plugin="workflow-job@1292.v27d8cc3e2602">
 <actions>
-<org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobAction plugin="pipeline-model-definition@2.2125.vddb_a_44a_d605e"/>
-<org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction plugin="pipeline-model-definition@2.2125.vddb_a_44a_d605e">
+<org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobAction plugin="pipeline-model-definition@2.2131.vb_9788088fdb_5"/>
+<org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction plugin="pipeline-model-definition@2.2131.vb_9788088fdb_5">
 <jobProperties/>
 <triggers/>
 <parameters/>
@@ -12,6 +12,26 @@
 <description>A sample Jenkins pipeline</description>
 <keepDependencies>false</keepDependencies>
 <properties>
+<hudson.model.ParametersDefinitionProperty>
+<parameterDefinitions>
+<org.jvnet.jenkins.plugins.nodelabelparameter.NodeParameterDefinition plugin="nodelabelparameter@1.11.0">
+<name>node</name>
+<allowedSlaves>
+<string>prod1</string>
+<string>prod2</string>
+</allowedSlaves>
+<defaultSlaves>
+<string>prod1</string>
+<string>prod2</string>
+</defaultSlaves>
+<triggerIfResult>allowMultiSelectionForConcurrentBuilds</triggerIfResult>
+<allowMultiNodeSelection>true</allowMultiNodeSelection>
+<triggerConcurrentBuilds>true</triggerConcurrentBuilds>
+<ignoreOfflineNodes>false</ignoreOfflineNodes>
+<nodeEligibility class="org.jvnet.jenkins.plugins.nodelabelparameter.node.AllNodeEligibility"/>
+</org.jvnet.jenkins.plugins.nodelabelparameter.NodeParameterDefinition>
+</parameterDefinitions>
+</hudson.model.ParametersDefinitionProperty>
 <org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
 <triggers>
 <jenkins.triggers.ReverseBuildTrigger>
