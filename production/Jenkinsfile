@@ -1,5 +1,5 @@
 pipeline {
-    agent { label "${params.node}" }
+    agent { label "node" }
 
     stages {
         stage('dockerhub pull') {
