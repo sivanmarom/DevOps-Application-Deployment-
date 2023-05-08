@@ -96,7 +96,7 @@ def launch_instance():
                     break
                 print("Waiting for instance to be running and public IP address...")
                 time.sleep(5)
-        return render_template("aws.html", instances=instances)
+        return instances
 
 @app.route('/user_created')
 def user_information():
