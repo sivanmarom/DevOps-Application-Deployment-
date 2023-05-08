@@ -89,13 +89,18 @@ def launch_instance():
                     'Tags': [{'Key': 'Name', 'Value': instance_name}]
                 }]
             )
-            instances.append(instance[i])
             while True:
                 instance[i].reload()
                 if instance[i].state['Name'] == 'running' and instance[i].public_ip_address is not None:
                     break
                 print("Waiting for instance to be running and public IP address...")
                 time.sleep(5)
+            instances.append({
+                'instance_name': instance_name,
+                'instance_id': instance[i].id,
+                'instance_public_ip': instance[i].public_ip_address,
+                'instance_state': instance[i].state['Name']
+            })
         return instances
 
 @app.route('/user_created')

@@ -34,10 +34,10 @@
   <tbody>
     {% for instance in instances %}
       <tr>
-        <td>{{ instance.instance_name }}</td>
-        <td>{{ instance.instance_id }}</td>
-        <td>{{ instance.instance_public_ip }}</td>
-        <td>{{ instance.instance_state }}</td>
+       <td>{{ instance['instance_name'] }}</td>
+        <td>{{ instance['instance_id'] }}</td>
+        <td>{{ instance['instance_public_ip'] }}</td>
+        <td>{{ instance['instance_state'] }}</td>
       </tr>
     {% endfor %}
   </tbody>
