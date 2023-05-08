@@ -56,7 +56,7 @@ def create_iam_user():
                         secret_access_key=secret_access_key))
     elif request.method == 'POST' and request.form['submit'] == 'Create instance':
         launched=launch_instance()
-        return launched
+        return render_template("aws.html", instances=launched)
     return render_template("aws.html")
 
 def launch_instance():
