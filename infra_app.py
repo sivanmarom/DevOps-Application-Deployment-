@@ -60,7 +60,6 @@ def create_iam_user():
     return render_template("aws.html")
 
 def launch_instance():
-    if request.method == 'POST' and request.form['submit'] == 'Create instance':
         ec2 = boto3.resource("ec2")
         add_docker = 'add_docker' in request.form
         add_jenkins = 'add_jenkins' in request.form
@@ -90,6 +89,7 @@ def launch_instance():
                     'Tags': [{'Key': 'Name', 'Value': instance_name}]
                 }]
             )
+            instances.append(instance[i])
             while True:
                 instance[i].reload()
                 if instance[i].state['Name'] == 'running' and instance[i].public_ip_address is not None:
