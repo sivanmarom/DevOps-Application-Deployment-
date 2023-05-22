@@ -3,8 +3,6 @@ pipeline{
     agent { label 'slave1' }
     environment {
     TIME = sh(script: 'date "+%Y-%m-%d %H:%M:%S"', returnStdout: true).trim()
-    VERSION_FILE = '/home/ubuntu/version.txt'
-   VERSION = sh(script: "if [ -f ${VERSION_FILE} ]; then cat ${VERSION_FILE}; else echo '1.0'; fi", returnStdout: true).trim()
     }
     stages{
         stage('git clone') {
@@ -18,8 +16,8 @@ pipeline{
         stage('Build Docker image') {
            steps {
                 dir('/home/ubuntu/workspace/pipeline-try/project-flask-app') {
-                sh 'sudo docker build -t flask_image:${VERSION} .'
-               sh "sudo docker run -it --name flaskApp -p 5000:5000 -d flask_image:${VERSION}"
+                sh 'sudo docker build -t flask_image:${env.VERSION} .'
+               sh "sudo docker run -it --name flaskApp -p 5000:5000 -d flask_image:${env.VERSION}"
           }
           }
         }
@@ -67,9 +65,8 @@ pipeline{
         steps {
         withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
             sh 'sudo docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
-            sh 'sudo docker tag flask_image:${VERSION} sivanmarom/test:flask_image-${VERSION}'
-            sh 'sudo docker push sivanmarom/test:flask_image-${VERSION}'
-            sh 'if [ $? -eq 0 ]; then VERSION=$(echo $VERSION+1 | bc); echo $VERSION > /home/ubuntu/version.txt; fi'
+            sh 'sudo docker tag flask_image:${env.VERSION} sivanmarom/test:flask_image-${env.VERSION}'
+            sh 'sudo docker push sivanmarom/test:flask_image-${env.VERSION}'
                 }
             }
         }

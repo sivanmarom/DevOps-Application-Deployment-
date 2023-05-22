@@ -13,6 +13,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///my_site.db'
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
+
 class Profile(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_name = db.Column(db.String(20), unique=False, nullable=False)
@@ -20,6 +21,7 @@ class Profile(db.Model):
 
     def __str__(self):
         return f"Username: {self.user_name}, password:{self.password}"
+
 
 @app.route('/signup', methods=['POST', 'GET'])
 def Signup():
@@ -33,12 +35,16 @@ def Signup():
         return redirect("/registered")
     return render_template("signup.html")
 
+
 @app.route('/')
 def homepage():
     return render_template("homepage.html")
+
+
 @app.route('/registered')
 def registered():
     return render_template("registered.html", my_users=my_users)
+
 
 @app.route('/aws', methods=['POST', 'GET'])
 def create_iam_user():
@@ -48,60 +54,63 @@ def create_iam_user():
         password = request.form.get('password')
         iam.create_user(UserName=username)
         iam.add_user_to_group(GroupName='admin_permissions', UserName=username)
-        iam.create_login_profile(UserName=username, Password=password, PasswordResetRequired=False)
+        iam.create_login_profile(
+            UserName=username, Password=password, PasswordResetRequired=False)
         access_keys = iam.create_access_key(UserName=username)
         access_key_id = access_keys["AccessKey"]["AccessKeyId"]
         secret_access_key = access_keys["AccessKey"]["SecretAccessKey"]
         return redirect(url_for('user_information', username=username, password=password, access_key_id=access_key_id,
                         secret_access_key=secret_access_key))
     elif request.method == 'POST' and request.form['submit'] == 'Create instance':
-        launched=launch_instance()
+        launched = launch_instance()
         return render_template("aws.html", instances=launched)
     return render_template("aws.html")
 
+
 def launch_instance():
-        ec2 = boto3.resource("ec2")
-        add_docker = 'add_docker' in request.form
-        add_jenkins = 'add_jenkins' in request.form
-        user_data = "#!/bin/bash\n"
-        if add_docker:
-            user_data += "sudo apt update && sudo apt -y install docker.io\n"
-        if add_jenkins:
-            user_data += 'docker run --name jenkins_master -p 8080:8080 -p 50000:50000 -d -v jenkins_home:/var/jenkins_home jenkins/jenkins:lts\n'
-        instance_name = request.form.get('instance_name')
-        instance_type = request.form.get('instance_type')
-        key_pair_name = 'jenkins-master'
-        image_id = request.form.get('image_id')
-        security_group_id = 'sg-03915679baa198009'
-        instance_count = int(request.form['instance_count'])
-        instances = []
-        for i in range(instance_count):
-            instance = ec2.create_instances(
-                ImageId=image_id,
-                InstanceType=instance_type,
-                KeyName=key_pair_name,
-                SecurityGroupIds=[security_group_id],
-                MinCount=instance_count,
-                MaxCount=instance_count,
-                UserData=user_data,
-                TagSpecifications=[{
-                    'ResourceType': "instance",
-                    'Tags': [{'Key': 'Name', 'Value': instance_name}]
-                }]
-            )
-            while True:
-                instance[i].reload()
-                if instance[i].state['Name'] == 'running' and instance[i].public_ip_address is not None:
-                    break
-                print("Waiting for instance to be running and public IP address...")
-                time.sleep(5)
-            instances.append({
-                'instance_name': instance_name,
-                'instance_id': instance[i].id,
-                'instance_public_ip': instance[i].public_ip_address,
-                'instance_state': instance[i].state['Name']
-            })
-        return instances
+    ec2 = boto3.resource("ec2")
+    add_docker = 'add_docker' in request.form
+    add_jenkins = 'add_jenkins' in request.form
+    user_data = "#!/bin/bash\n"
+    if add_docker:
+        user_data += "sudo apt update && sudo apt -y install docker.io\n"
+    if add_jenkins:
+        user_data += 'docker run --name jenkins_master -p 8080:8080 -p 50000:50000 -d -v jenkins_home:/var/jenkins_home jenkins/jenkins:lts\n'
+    instance_name = request.form.get('instance_name')
+    instance_type = request.form.get('instance_type')
+    key_pair_name = 'jenkins-master'
+    image_id = request.form.get('image_id')
+    security_group_id = 'sg-03915679baa198009'
+    instance_count = int(request.form['instance_count'])
+    instances = []
+    for i in range(instance_count):
+        instance = ec2.create_instances(
+            ImageId=image_id,
+            InstanceType=instance_type,
+            KeyName=key_pair_name,
+            SecurityGroupIds=[security_group_id],
+            MinCount=instance_count,
+            MaxCount=instance_count,
+            UserData=user_data,
+            TagSpecifications=[{
+                'ResourceType': "instance",
+                'Tags': [{'Key': 'Name', 'Value': instance_name}]
+            }]
+        )
+        while True:
+            instance[i].reload()
+            if instance[i].state['Name'] == 'running' and instance[i].public_ip_address is not None:
+                break
+            print("Waiting for instance to be running and public IP address...")
+            time.sleep(5)
+        instances.append({
+            'instance_name': instance_name,
+            'instance_id': instance[i].id,
+            'instance_public_ip': instance[i].public_ip_address,
+            'instance_state': instance[i].state['Name']
+        })
+    return instances
+
 
 @app.route('/user_created')
 def user_information():
@@ -111,23 +120,27 @@ def user_information():
                            access_key_id=request.args.get('access_key_id'),
                            secret_access_key=request.args.get('secret_access_key'))
 
+
 @app.route('/docker_image', methods=['POST', 'GET'])
 def create_docker_image():
     if request.method == 'POST':
         image_name = request.form.get('image_name')
         subprocess.run(['docker', 'build', '-t', f'{image_name}', '.'])
-        subprocess.run(['docker', 'tag', f'{image_name}', f'sivanmarom/test:{image_name}'])
+        subprocess.run(
+            ['docker', 'tag', f'{image_name}', f'sivanmarom/test:{image_name}'])
         subprocess.run(['docker', 'login', '-u', 'sivanmarom', '-p', ''])
         subprocess.run(['docker', 'push', f'sivanmarom/test:{image_name}'])
         return f'Docker image {image_name} created and pushed to Docker Hub'
     else:
         return render_template('docker_image.html')
 
-@app.route('/jenkins_job/freestyle',methods=['POST', 'GET'])
+
+@app.route('/jenkins_job/freestyle', methods=['POST', 'GET'])
 def create_jenkins_job_freestyle():
     if request.method == "POST":
         job_name = request.form.get("job_test")
-        server = jenkins.Jenkins('http://3.88.229.52:8080/', username='sivan_marom', password='1234')
+        server = jenkins.Jenkins(
+            'http://3.88.229.52:8080/', username='sivan_marom', password='1234')
         with open('templates/jenkins_job.xml', 'r') as f:
             job_config_xml = f.read()
         server.create_job(job_name, job_config_xml)
@@ -135,11 +148,13 @@ def create_jenkins_job_freestyle():
         return "job created successfully"
     return render_template('jenkins_job.html')
 
+
 @app.route('/jenkins_job/pipeline', methods=['POST', 'GET'])
 def create_jenkins_job_pipeline():
     if request.method == "POST":
         job_name = request.form.get("job2")
-        server = jenkins.Jenkins('http://3.88.229.52:8080/', username='sivan_marom', password='1234')
+        server = jenkins.Jenkins(
+            'http://3.88.229.52:8080/', username='sivan_marom', password='1234')
         workspace = request.form.get('workspace')
         if workspace == 'Testing':
             with open('templates/jenkins_job_pipeline.xml', 'r') as f:
@@ -154,4 +169,4 @@ def create_jenkins_job_pipeline():
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5000, debug=True)
