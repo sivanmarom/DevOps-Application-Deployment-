@@ -17,7 +17,7 @@ pipeline{
         steps{
          dir('/home/ubuntu/workspace/pipeline-try'){
             withEnv(["VERSION=${env.VERSION}"]) {
-            sh echo $VERSION
+            sh 'echo $VERSION'
             }
          }
         }
