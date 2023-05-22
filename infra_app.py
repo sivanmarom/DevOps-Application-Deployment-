@@ -140,7 +140,7 @@ def create_jenkins_job_freestyle():
     if request.method == "POST":
         job_name = request.form.get("job_test")
         server = jenkins.Jenkins(
-            'http://3.88.229.52:8080/', username='sivan_marom', password='1234')
+            'http://18.212.233.86:8080/', username='sivan_marom', password='1234')
         with open('templates/jenkins_job.xml', 'r') as f:
             job_config_xml = f.read()
         server.create_job(job_name, job_config_xml)
@@ -154,7 +154,7 @@ def create_jenkins_job_pipeline():
     if request.method == "POST":
         job_name = request.form.get("job2")
         server = jenkins.Jenkins(
-            'http://3.88.229.52:8080/', username='sivan_marom', password='1234')
+            'http://18.212.233.86:8080/', username='sivan_marom', password='1234')
         workspace = request.form.get('workspace')
         if workspace == 'Testing':
             with open('templates/jenkins_job_pipeline.xml', 'r') as f:
