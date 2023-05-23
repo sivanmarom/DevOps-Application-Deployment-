@@ -76,7 +76,8 @@ pipeline{
         stage('Update Version') {
     steps {
         script {
-            def newVersion = env.VERSION + 1
+             def currentVersion = env.VERSION.toDouble()
+            def newVersion = currentVersion + 0.1
             sh "sudo sed -i 's/VERSION=.*/VERSION=${newVersion}/' /etc/environment"
 
         }
