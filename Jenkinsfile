@@ -76,11 +76,11 @@ pipeline{
         stage('Update Version') {
     steps {
         script {
-            def currentVersion = env.VERSION.toDouble()
-            def newVersion = currentVersion + 0.1
-            sh "sudo sed -i 's/VERSION=.*/VERSION=${newVersion}/' /etc/environment"
+            def currentVersion = (env.VERSION.toDouble()) + 0.1
+            def roundedVersion = Math.round(newVersion * 10) / 10
+            sh "sudo sed -i 's/VERSION=.*/VERSION=${roundedVersion}/' /etc/environment"
         script {
-            build job: 'production', parameters: [string(name: 'VERSION', value: newVersion.toString())]
+           build job: 'production', parameters: [string(name: 'VERSION', value: roundedVersion.toString())]
         }
         }
     }

@@ -1,6 +1,10 @@
 pipeline {
     agent { label "${node}" }
 
+    parameters {
+        string(name: 'VERSION', defaultValue: '', description: 'Version number for the docker image')
+    }
+
     stages {
         stage('dockerhub pull') {
             steps {
