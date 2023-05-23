@@ -4,11 +4,8 @@ pipeline {
     stages {
         stage('dockerhub pull') {
             steps {
-                sh 'sudo docker pull sivanmarom/test:flask_image-6.0'
-                sh 'sudo docker run -it --name flaskApp -p 5000:5000 -d sivanmarom/test:flask_image-6.0'
-                script {
-                build job: 'production', parameters: [string(name: 'VERSION', value: newVersion.toString())]
-            }
+                sh "sudo docker pull sivanmarom/test:flask_image-${params.VERSION}"
+                sh "sudo docker run -it --name flaskApp -p 5000:5000 -d sivanmarom/test:flask_image-${params.VERSION}"
             }
         }
     }
