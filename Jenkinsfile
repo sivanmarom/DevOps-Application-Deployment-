@@ -76,8 +76,8 @@ pipeline{
         stage('Update Version') {
     steps {
          script {
-                    def currentVersion = (env.VERSION.toDouble()) + 0.1
-                    def roundedVersion = Math.round(currentVersion * 10) / 10
+                    def currentVersion = (env.VERSION.toDouble())
+def roundedVersion = Math.round((currentVersion + 0.1) * 10) / 10
                     sh "sudo sed -i 's/VERSION=.*/VERSION=${roundedVersion}/' /etc/environment"
                     build job: 'production', parameters: [string(name: 'VERSION', value: currentVersion.toString())]
                 }
