@@ -78,6 +78,7 @@ pipeline{
         script {
             def newVersion = env.VERSION + 1
             sh "sudo sed -i 's/VERSION=.*/VERSION=${newVersion}/' /etc/environment"
+
         }
     }
 }
