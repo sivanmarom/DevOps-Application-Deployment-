@@ -8,8 +8,11 @@ pipeline {
     stages {
         stage('dockerhub pull') {
             steps {
-                sh "sudo docker pull sivanmarom/test:flask_image-\${params.VERSION}"
-                sh "sudo docker run -it --name flaskApp -p 5000:5000 -d sivanmarom/test:flask_image-\${params.VERSION}"
+                sh """
+                    echo "Version: \${params.VERSION}"  // Ensure variable is enclosed within quotes
+                    sudo docker pull sivanmarom/test:flask_image-\${params.VERSION}
+                    sudo docker run -it --name flaskApp -p 5000:5000 -d sivanmarom/test:flask_image-\${params.VERSION}
+                """
             }
         }
     }
