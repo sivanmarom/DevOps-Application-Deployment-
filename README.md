@@ -10,7 +10,9 @@ The DevOps Application Deployment Project aims to automate the deployment and ma
 &#8226; Description: An application that provides control and management functionalities for AWS resources and Docker Hub using various technologies.
 
 &#8226; Technologies: AWS, Jenkins, Docker, Docker Hub
+
 3. Application 2: User Retrieval and Greeting App
+
 &#8226; Description: An application that retrieves user names during the sign-in process, stores them in a database, and greets the users.
 
 &#8226; Technologies: Python, DynamoDB, Selenium, S3, Docker
