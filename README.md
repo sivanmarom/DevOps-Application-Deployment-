@@ -7,34 +7,30 @@ The DevOps Application Deployment Project aims to automate the deployment and ma
 1. AWS Resources, Jenkins, and Docker Hub Integration: Provision and manage AWS resources using automation tools, integrate them with Jenkins for automated deployment, and control Docker Hub for image management.
 2. Application 1: Control and Management App
 
-&#8226; Description: An application that provides control and management functionalities for AWS resources and Docker Hub using various technologies.
+  &#8226; Description: An application that provides control and management functionalities for AWS resources and Docker Hub using various technologies.
 
-&#8226; Technologies: AWS, Jenkins, Docker, Docker Hub
+  &#8226; Technologies: AWS, Jenkins, Docker, Docker Hub
 
 3. Application 2: User Retrieval and Greeting App
 
-&#8226; Description: An application that retrieves user names during the sign-in process, stores them in a database, and greets the users.
+  &#8226; Description: An application that retrieves user names during the sign-in process, stores them in a database, and greets the users.
 
-&#8226; Technologies: Python, DynamoDB, Selenium, S3, Docker
+  &#8226; Technologies: Python, DynamoDB, Selenium, S3, Docker
 
 4. Jenkins Pipeline:
 
-&#8226; Description: A Jenkins pipeline that runs automated tests on the User Retrieval and Greeting App using Selenium.
+  &#8226; Description: A Jenkins pipeline that runs automated tests on the User Retrieval and Greeting App using Selenium.
 
-&#8226; Technologies: Jenkins, Selenium, S3, DynamoDB, Docker
+  &#8226; Technologies: Jenkins, Selenium, S3, DynamoDB, Docker
 
 ## Deployment and Lifecycle Management
 The deployment and lifecycle management of the applications are orchestrated using Jenkins pipeline jobs. The Jenkins pipeline includes the following stages:
-
 1. Build and Deployment: Triggers the deployment of the applications using Docker containers and manages the images on Docker Hub.
-
 2. Testing and Reporting: Runs automated tests on the User Retrieval and Greeting App using Selenium, generates a test report, and uploads it to an S3 bucket. Logs are also stored in a DynamoDB table.
-
 3. Production Deployment: If the tests pass successfully, the Docker image of the application is pushed to Docker Hub, triggering another job to deploy the image to production instances.
 
 ## AWS Setup
 To successfully deploy the applications, follow these preliminary steps:
-
 1. Create an AWS account and generate access credentials with appropriate permissions.
 2. Install and configure the AWS CLI on your local machine.
 3. Set up your AWS credentials locally by running aws configure and providing your access key and secret key.
@@ -52,7 +48,6 @@ The project repository is structured as follows:
 
 ## Instructions
 To successfully deploy and manage the applications, follow these steps:
-
 1. Clone the project repository to your local machine.
 2. Set up Jenkins with the required plugins and configurations.
 3. Review and update the application-specific configuration files based on your specific requirements.
@@ -64,7 +59,6 @@ To successfully deploy and manage the applications, follow these steps:
 
 ## Contributing
 Contributions are welcome! If you'd like to contribute to this project, please follow these steps:
-
 1. Fork the repository.
 2. Create a new branch: git checkout -b new-feature.
 3. Make your changes and commit them: git commit -m 'Add some feature'.
