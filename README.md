@@ -5,7 +5,6 @@ This project focuses on the deployment and management of two applications using 
 The DevOps Application Deployment Project aims to automate the deployment and management of the applications through the following key components:
 
 1. AWS Resources, Jenkins, and Docker Hub Integration: Provision and manage AWS resources using automation tools, integrate them with Jenkins for automated deployment, and control Docker Hub for image management.
-
 2. Application 1: Control and Management App
 
 &#8226; Description: An application that provides control and management functionalities for AWS resources and Docker Hub using various technologies.
